@@ -1,0 +1,1239 @@
+openapi: 3.1.0
+info:
+  title: Family 360 - Family API
+  version: 0.1.0
+  description: >
+    API for managing families and their direct relationships. 
+  license:
+    name: Proprietary
+    identifier: LicenseRef-Proprietary
+servers:
+  - url: /api
+    description: Current deployment
+tags:
+  - name: Families
+    description: Family root resources.
+  - name: Family Users
+    description: User access relations for families.
+  - name: Family Members
+    description: People represented in the family domain.
+  - name: Households
+    description: Physical or economic places linked to a family.
+  - name: Household Members
+    description: Residence relations between family members and households.
+  - name: Financial Accounts
+    description: Family financial accounts without movements.
+security:
+  - bearerAuth: []
+paths:
+  /families:
+    get:
+      tags:
+        - Families
+      summary: List families available to the current user
+      operationId: listFamilies
+      parameters:
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/Limit'
+        - $ref: '#/components/parameters/Sort'
+      responses:
+        '200':
+          description: Families page
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FamilyPage'
+        '400':
+          $ref: '#/components/responses/ProblemResponse'
+        default:
+          $ref: '#/components/responses/ProblemResponse'
+    post:
+      tags:
+        - Families
+      summary: Create a family
+      operationId: createFamily
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FamilyInput'
+      responses:
+        '201':
+          description: Family created
+          headers:
+            Location:
+              $ref: '#/components/headers/Location'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Family'
+        '400':
+          $ref: '#/components/responses/ProblemResponse'
+        default:
+          $ref: '#/components/responses/ProblemResponse'
+
+  /families/{familyId}:
+    parameters:
+      - $ref: '#/components/parameters/FamilyId'
+    get:
+      tags:
+        - Families
+      summary: Get a family
+      operationId: getFamily
+      responses:
+        '200':
+          description: Family found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Family'
+        '400':
+          $ref: '#/components/responses/ProblemResponse'
+        default:
+          $ref: '#/components/responses/ProblemResponse'
+    patch:
+      tags:
+        - Families
+      summary: Partially update a family
+      operationId: patchFamily
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FamilyPatch'
+      responses:
+        '200':
+          description: Family updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Family'
+        '400':
+          $ref: '#/components/responses/ProblemResponse'
+        default:
+          $ref: '#/components/responses/ProblemResponse'
+    delete:
+      tags:
+        - Families
+      summary: Disable a family
+      operationId: disableFamily
+      responses:
+        '204':
+          description: Family disabled
+        '400':
+          $ref: '#/components/responses/ProblemResponse'
+        default:
+          $ref: '#/components/responses/ProblemResponse'
+
+  /families/{familyId}/users:
+    parameters:
+      - $ref: '#/components/parameters/FamilyId'
+    get:
+      tags:
+        - Family Users
+      summary: List users with access to a family
+      operationId: listFamilyUsers
+      parameters:
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/Limit'
+        - $ref: '#/components/parameters/Sort'
+      responses:
+        '200':
+          description: Family users page
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FamilyUserPage'
+        '400':
+          $ref: '#/components/responses/ProblemResponse'
+        default:
+          $ref: '#/components/responses/ProblemResponse'
+    post:
+      tags:
+        - Family Users
+      summary: Add an existing user to a family
+      operationId: createFamilyUser
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FamilyUserInput'
+      responses:
+        '201':
+          description: User added to family
+          headers:
+            Location:
+              $ref: '#/components/headers/Location'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FamilyUser'
+        '400':
+          $ref: '#/components/responses/ProblemResponse'
+        default:
+          $ref: '#/components/responses/ProblemResponse'
+
+  /families/{familyId}/users/{familyUserId}:
+    parameters:
+      - $ref: '#/components/parameters/FamilyId'
+      - $ref: '#/components/parameters/FamilyUserId'
+    get:
+      tags:
+        - Family Users
+      summary: Get a family user relation
+      operationId: getFamilyUser
+      responses:
+        '200':
+          description: Family user relation found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FamilyUser'
+        '400':
+          $ref: '#/components/responses/ProblemResponse'
+        default:
+          $ref: '#/components/responses/ProblemResponse'
+    patch:
+      tags:
+        - Family Users
+      summary: Partially update a family user relation
+      operationId: patchFamilyUser
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FamilyUserPatch'
+      responses:
+        '200':
+          description: Family user relation updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FamilyUser'
+        '400':
+          $ref: '#/components/responses/ProblemResponse'
+        default:
+          $ref: '#/components/responses/ProblemResponse'
+    delete:
+      tags:
+        - Family Users
+      summary: Disable a user relation with a family
+      operationId: disableFamilyUser
+      responses:
+        '204':
+          description: Family user relation disabled
+        '400':
+          $ref: '#/components/responses/ProblemResponse'
+        default:
+          $ref: '#/components/responses/ProblemResponse'
+
+  /families/{familyId}/members:
+    parameters:
+      - $ref: '#/components/parameters/FamilyId'
+    get:
+      tags:
+        - Family Members
+      summary: List family members
+      operationId: listFamilyMembers
+      parameters:
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/Limit'
+        - $ref: '#/components/parameters/Sort'
+      responses:
+        '200':
+          description: Family members page
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FamilyMemberPage'
+        '400':
+          $ref: '#/components/responses/ProblemResponse'
+        default:
+          $ref: '#/components/responses/ProblemResponse'
+    post:
+      tags:
+        - Family Members
+      summary: Create a family member
+      operationId: createFamilyMember
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FamilyMemberInput'
+      responses:
+        '201':
+          description: Family member created
+          headers:
+            Location:
+              $ref: '#/components/headers/Location'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FamilyMember'
+        '400':
+          $ref: '#/components/responses/ProblemResponse'
+        default:
+          $ref: '#/components/responses/ProblemResponse'
+
+  /families/{familyId}/members/{memberId}:
+    parameters:
+      - $ref: '#/components/parameters/FamilyId'
+      - $ref: '#/components/parameters/MemberId'
+    get:
+      tags:
+        - Family Members
+      summary: Get a family member
+      operationId: getFamilyMember
+      responses:
+        '200':
+          description: Family member found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FamilyMember'
+        '400':
+          $ref: '#/components/responses/ProblemResponse'
+        default:
+          $ref: '#/components/responses/ProblemResponse'
+    patch:
+      tags:
+        - Family Members
+      summary: Partially update a family member
+      operationId: patchFamilyMember
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FamilyMemberPatch'
+      responses:
+        '200':
+          description: Family member updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FamilyMember'
+        '400':
+          $ref: '#/components/responses/ProblemResponse'
+        default:
+          $ref: '#/components/responses/ProblemResponse'
+    delete:
+      tags:
+        - Family Members
+      summary: Disable a family member
+      operationId: disableFamilyMember
+      responses:
+        '204':
+          description: Family member disabled
+        '400':
+          $ref: '#/components/responses/ProblemResponse'
+        default:
+          $ref: '#/components/responses/ProblemResponse'
+
+  /families/{familyId}/households:
+    parameters:
+      - $ref: '#/components/parameters/FamilyId'
+    get:
+      tags:
+        - Households
+      summary: List households
+      operationId: listHouseholds
+      parameters:
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/Limit'
+        - $ref: '#/components/parameters/Sort'
+      responses:
+        '200':
+          description: Households page
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HouseholdPage'
+        '400':
+          $ref: '#/components/responses/ProblemResponse'
+        default:
+          $ref: '#/components/responses/ProblemResponse'
+    post:
+      tags:
+        - Households
+      summary: Create a household
+      operationId: createHousehold
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HouseholdInput'
+      responses:
+        '201':
+          description: Household created
+          headers:
+            Location:
+              $ref: '#/components/headers/Location'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Household'
+        '400':
+          $ref: '#/components/responses/ProblemResponse'
+        default:
+          $ref: '#/components/responses/ProblemResponse'
+
+  /families/{familyId}/households/{householdId}:
+    parameters:
+      - $ref: '#/components/parameters/FamilyId'
+      - $ref: '#/components/parameters/HouseholdId'
+    get:
+      tags:
+        - Households
+      summary: Get a household
+      operationId: getHousehold
+      responses:
+        '200':
+          description: Household found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Household'
+        '400':
+          $ref: '#/components/responses/ProblemResponse'
+        default:
+          $ref: '#/components/responses/ProblemResponse'
+    patch:
+      tags:
+        - Households
+      summary: Partially update a household
+      operationId: patchHousehold
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HouseholdPatch'
+      responses:
+        '200':
+          description: Household updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Household'
+        '400':
+          $ref: '#/components/responses/ProblemResponse'
+        default:
+          $ref: '#/components/responses/ProblemResponse'
+    delete:
+      tags:
+        - Households
+      summary: Disable a household
+      operationId: disableHousehold
+      responses:
+        '204':
+          description: Household disabled
+        '400':
+          $ref: '#/components/responses/ProblemResponse'
+        default:
+          $ref: '#/components/responses/ProblemResponse'
+
+  /families/{familyId}/households/{householdId}/members:
+    parameters:
+      - $ref: '#/components/parameters/FamilyId'
+      - $ref: '#/components/parameters/HouseholdId'
+    get:
+      tags:
+        - Household Members
+      summary: List household member relations
+      operationId: listHouseholdMembers
+      parameters:
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/Limit'
+        - $ref: '#/components/parameters/Sort'
+      responses:
+        '200':
+          description: Household members page
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HouseholdMemberPage'
+        '400':
+          $ref: '#/components/responses/ProblemResponse'
+        default:
+          $ref: '#/components/responses/ProblemResponse'
+    post:
+      tags:
+        - Household Members
+      summary: Add a family member to a household
+      operationId: createHouseholdMember
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HouseholdMemberInput'
+      responses:
+        '201':
+          description: Household member relation created
+          headers:
+            Location:
+              $ref: '#/components/headers/Location'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HouseholdMember'
+        '400':
+          $ref: '#/components/responses/ProblemResponse'
+        default:
+          $ref: '#/components/responses/ProblemResponse'
+
+  /families/{familyId}/households/{householdId}/members/{householdMemberId}:
+    parameters:
+      - $ref: '#/components/parameters/FamilyId'
+      - $ref: '#/components/parameters/HouseholdId'
+      - $ref: '#/components/parameters/HouseholdMemberId'
+    get:
+      tags:
+        - Household Members
+      summary: Get a household member relation
+      operationId: getHouseholdMember
+      responses:
+        '200':
+          description: Household member relation found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HouseholdMember'
+        '400':
+          $ref: '#/components/responses/ProblemResponse'
+        default:
+          $ref: '#/components/responses/ProblemResponse'
+    patch:
+      tags:
+        - Household Members
+      summary: Partially update a household member relation
+      operationId: patchHouseholdMember
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HouseholdMemberPatch'
+      responses:
+        '200':
+          description: Household member relation updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HouseholdMember'
+        '400':
+          $ref: '#/components/responses/ProblemResponse'
+        default:
+          $ref: '#/components/responses/ProblemResponse'
+    delete:
+      tags:
+        - Household Members
+      summary: Remove a family member from a household
+      operationId: deleteHouseholdMember
+      responses:
+        '204':
+          description: Household member relation removed
+        '400':
+          $ref: '#/components/responses/ProblemResponse'
+        default:
+          $ref: '#/components/responses/ProblemResponse'
+
+  /families/{familyId}/financial-accounts:
+    parameters:
+      - $ref: '#/components/parameters/FamilyId'
+    get:
+      tags:
+        - Financial Accounts
+      summary: List financial accounts
+      operationId: listFinancialAccounts
+      parameters:
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/Limit'
+        - $ref: '#/components/parameters/Sort'
+      responses:
+        '200':
+          description: Financial accounts page
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FinancialAccountPage'
+        '400':
+          $ref: '#/components/responses/ProblemResponse'
+        default:
+          $ref: '#/components/responses/ProblemResponse'
+    post:
+      tags:
+        - Financial Accounts
+      summary: Create a financial account
+      operationId: createFinancialAccount
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FinancialAccountInput'
+      responses:
+        '201':
+          description: Financial account created
+          headers:
+            Location:
+              $ref: '#/components/headers/Location'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FinancialAccount'
+        '400':
+          $ref: '#/components/responses/ProblemResponse'
+        default:
+          $ref: '#/components/responses/ProblemResponse'
+
+  /families/{familyId}/financial-accounts/{financialAccountId}:
+    parameters:
+      - $ref: '#/components/parameters/FamilyId'
+      - $ref: '#/components/parameters/FinancialAccountId'
+    get:
+      tags:
+        - Financial Accounts
+      summary: Get a financial account
+      operationId: getFinancialAccount
+      responses:
+        '200':
+          description: Financial account found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FinancialAccount'
+        '400':
+          $ref: '#/components/responses/ProblemResponse'
+        default:
+          $ref: '#/components/responses/ProblemResponse'
+    patch:
+      tags:
+        - Financial Accounts
+      summary: Partially update a financial account
+      operationId: patchFinancialAccount
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FinancialAccountPatch'
+      responses:
+        '200':
+          description: Financial account updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FinancialAccount'
+        '400':
+          $ref: '#/components/responses/ProblemResponse'
+        default:
+          $ref: '#/components/responses/ProblemResponse'
+    delete:
+      tags:
+        - Financial Accounts
+      summary: Disable a financial account
+      operationId: disableFinancialAccount
+      responses:
+        '204':
+          description: Financial account disabled
+        '400':
+          $ref: '#/components/responses/ProblemResponse'
+        default:
+          $ref: '#/components/responses/ProblemResponse'
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  headers:
+    Location:
+      description: URI of the created resource
+      schema:
+        type: string
+        format: uri
+
+  parameters:
+    Page:
+      name: page
+      in: query
+      description: Zero-based page index
+      schema:
+        type: integer
+        minimum: 0
+        default: 0
+    Limit:
+      name: limit
+      in: query
+      description: Maximum number of items per page
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        default: 20
+    Sort:
+      name: sort
+      in: query
+      description: Sort expression, such as name,asc
+      schema:
+        type: string
+    FamilyId:
+      name: familyId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+    FamilyUserId:
+      name: familyUserId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+    MemberId:
+      name: memberId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+    HouseholdId:
+      name: householdId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+    HouseholdMemberId:
+      name: householdMemberId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+    FinancialAccountId:
+      name: financialAccountId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+
+  responses:
+    ProblemResponse:
+      description: Error response
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/Problem'
+
+  schemas:
+    PageMetadata:
+      type: object
+      required:
+        - page
+        - limit
+        - totalElements
+        - totalPages
+      properties:
+        page:
+          type: integer
+          minimum: 0
+        limit:
+          type: integer
+          minimum: 1
+        totalElements:
+          type: integer
+          minimum: 0
+        totalPages:
+          type: integer
+          minimum: 0
+
+    Problem:
+      type: object
+      required:
+        - title
+        - status
+      properties:
+        type:
+          type: string
+          format: uri
+          default: about:blank
+        title:
+          type: string
+        status:
+          type: integer
+          minimum: 100
+          maximum: 599
+        detail:
+          type: string
+        instance:
+          type: string
+          format: uri
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProblemError'
+
+    ProblemError:
+      type: object
+      required:
+        - detail
+      properties:
+        detail:
+          type: string
+        pointer:
+          type: string
+
+    FamilyBase:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 120
+        currency:
+          type: string
+          minLength: 3
+          maxLength: 3
+          example: EUR
+
+    FamilyInput:
+      allOf:
+        - $ref: '#/components/schemas/FamilyBase'
+        - type: object
+          required:
+            - name
+            - currency
+
+    FamilyPatch:
+      allOf:
+        - $ref: '#/components/schemas/FamilyBase'
+
+    Family:
+      allOf:
+        - $ref: '#/components/schemas/FamilyBase'
+        - type: object
+          required:
+            - id
+            - name
+            - currency
+            - createdAt
+          properties:
+            id:
+              type: string
+              format: uuid
+            createdAt:
+              type: string
+              format: date-time
+            disabledAt:
+              type:
+                - string
+                - 'null'
+              format: date-time
+
+    FamilyPage:
+      allOf:
+        - $ref: '#/components/schemas/PageMetadata'
+        - type: object
+          required:
+            - data
+          properties:
+            data:
+              type: array
+              items:
+                $ref: '#/components/schemas/Family'
+
+    FamilyUserBase:
+      type: object
+      properties:
+        role:
+          $ref: '#/components/schemas/FamilyUserRole'
+
+    FamilyUserInput:
+      allOf:
+        - $ref: '#/components/schemas/FamilyUserBase'
+        - type: object
+          required:
+            - userAccountId
+            - role
+          properties:
+            userAccountId:
+              type: string
+              format: uuid
+
+    FamilyUserPatch:
+      allOf:
+        - $ref: '#/components/schemas/FamilyUserBase'
+
+    FamilyUser:
+      allOf:
+        - $ref: '#/components/schemas/FamilyUserBase'
+        - type: object
+          required:
+            - id
+            - familyId
+            - userAccountId
+            - role
+            - joinedAt
+          properties:
+            id:
+              type: string
+              format: uuid
+            familyId:
+              type: string
+              format: uuid
+            userAccountId:
+              type: string
+              format: uuid
+            joinedAt:
+              type: string
+              format: date-time
+            disabledAt:
+              type:
+                - string
+                - 'null'
+              format: date-time
+
+    FamilyUserPage:
+      allOf:
+        - $ref: '#/components/schemas/PageMetadata'
+        - type: object
+          required:
+            - data
+          properties:
+            data:
+              type: array
+              items:
+                $ref: '#/components/schemas/FamilyUser'
+
+    FamilyMemberBase:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 120
+        memberType:
+          $ref: '#/components/schemas/FamilyMemberType'
+        birthDate:
+          type:
+            - string
+            - 'null'
+          format: date
+
+    FamilyMemberInput:
+      allOf:
+        - $ref: '#/components/schemas/FamilyMemberBase'
+        - type: object
+          required:
+            - name
+            - memberType
+
+    FamilyMemberPatch:
+      allOf:
+        - $ref: '#/components/schemas/FamilyMemberBase'
+
+    FamilyMember:
+      allOf:
+        - $ref: '#/components/schemas/FamilyMemberBase'
+        - type: object
+          required:
+            - id
+            - familyId
+            - name
+            - memberType
+            - createdAt
+          properties:
+            id:
+              type: string
+              format: uuid
+            familyId:
+              type: string
+              format: uuid
+            createdAt:
+              type: string
+              format: date-time
+            disabledAt:
+              type:
+                - string
+                - 'null'
+              format: date-time
+
+    FamilyMemberPage:
+      allOf:
+        - $ref: '#/components/schemas/PageMetadata'
+        - type: object
+          required:
+            - data
+          properties:
+            data:
+              type: array
+              items:
+                $ref: '#/components/schemas/FamilyMember'
+
+    HouseholdBase:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 120
+        type:
+          $ref: '#/components/schemas/HouseholdType'
+        address:
+          type:
+            - string
+            - 'null'
+          maxLength: 300
+        mainHousehold:
+          type: boolean
+
+    HouseholdInput:
+      allOf:
+        - $ref: '#/components/schemas/HouseholdBase'
+        - type: object
+          required:
+            - name
+            - type
+            - mainHousehold
+
+    HouseholdPatch:
+      allOf:
+        - $ref: '#/components/schemas/HouseholdBase'
+
+    Household:
+      allOf:
+        - $ref: '#/components/schemas/HouseholdBase'
+        - type: object
+          required:
+            - id
+            - familyId
+            - name
+            - type
+            - mainHousehold
+            - createdAt
+          properties:
+            id:
+              type: string
+              format: uuid
+            familyId:
+              type: string
+              format: uuid
+            createdAt:
+              type: string
+              format: date-time
+            disabledAt:
+              type:
+                - string
+                - 'null'
+              format: date-time
+
+    HouseholdPage:
+      allOf:
+        - $ref: '#/components/schemas/PageMetadata'
+        - type: object
+          required:
+            - data
+          properties:
+            data:
+              type: array
+              items:
+                $ref: '#/components/schemas/Household'
+
+    HouseholdMemberBase:
+      type: object
+      properties:
+        familyMemberId:
+          type: string
+          format: uuid
+        fromDate:
+          type: string
+          format: date
+        toDate:
+          type:
+            - string
+            - 'null'
+          format: date
+        role:
+          $ref: '#/components/schemas/HouseholdMemberRole'
+
+    HouseholdMemberInput:
+      allOf:
+        - $ref: '#/components/schemas/HouseholdMemberBase'
+        - type: object
+          required:
+            - familyMemberId
+            - fromDate
+            - role
+
+    HouseholdMemberPatch:
+      type: object
+      properties:
+        fromDate:
+          type: string
+          format: date
+        toDate:
+          type:
+            - string
+            - 'null'
+          format: date
+        role:
+          $ref: '#/components/schemas/HouseholdMemberRole'
+
+    HouseholdMember:
+      allOf:
+        - $ref: '#/components/schemas/HouseholdMemberBase'
+        - type: object
+          required:
+            - id
+            - householdId
+            - familyMemberId
+            - fromDate
+            - role
+          properties:
+            id:
+              type: string
+              format: uuid
+            householdId:
+              type: string
+              format: uuid
+
+    HouseholdMemberPage:
+      allOf:
+        - $ref: '#/components/schemas/PageMetadata'
+        - type: object
+          required:
+            - data
+          properties:
+            data:
+              type: array
+              items:
+                $ref: '#/components/schemas/HouseholdMember'
+
+    FinancialAccountBase:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 120
+        type:
+          $ref: '#/components/schemas/FinancialAccountType'
+        institutionName:
+          type:
+            - string
+            - 'null'
+          maxLength: 120
+        ibanMasked:
+          type:
+            - string
+            - 'null'
+          maxLength: 34
+
+    FinancialAccountInput:
+      allOf:
+        - $ref: '#/components/schemas/FinancialAccountBase'
+        - type: object
+          required:
+            - name
+            - type
+
+    FinancialAccountPatch:
+      allOf:
+        - $ref: '#/components/schemas/FinancialAccountBase'
+
+    FinancialAccount:
+      allOf:
+        - $ref: '#/components/schemas/FinancialAccountBase'
+        - type: object
+          required:
+            - id
+            - familyId
+            - name
+            - type
+            - createdAt
+          properties:
+            id:
+              type: string
+              format: uuid
+            familyId:
+              type: string
+              format: uuid
+            createdAt:
+              type: string
+              format: date-time
+            disabledAt:
+              type:
+                - string
+                - 'null'
+              format: date-time
+
+    FinancialAccountPage:
+      allOf:
+        - $ref: '#/components/schemas/PageMetadata'
+        - type: object
+          required:
+            - data
+          properties:
+            data:
+              type: array
+              items:
+                $ref: '#/components/schemas/FinancialAccount'
+
+    FamilyUserRole:
+      type: string
+      enum:
+        - OWNER
+        - ADMIN
+        - MEMBER
+        - VIEWER
+
+    FamilyMemberType:
+      type: string
+      enum:
+        - ADULT
+        - CHILD
+        - DEPENDENT
+        - OTHER
+
+    HouseholdType:
+      type: string
+      enum:
+        - MAIN_HOME
+        - SECOND_HOME
+        - RENTAL
+        - FAMILY_HOME
+        - TEMPORARY
+        - OTHER
+
+    HouseholdMemberRole:
+      type: string
+      enum:
+        - OWNER
+        - RESIDENT
+        - DEPENDENT
+        - TEMPORARY
+        - OTHER
+
+    FinancialAccountType:
+      type: string
+      enum:
+        - CHECKING
+        - SAVINGS
+        - CREDIT_CARD
+        - CASH
+        - LOAN
+        - INVESTMENT
+        - OTHER
