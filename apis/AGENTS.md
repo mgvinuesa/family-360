@@ -210,17 +210,40 @@ Non-breaking examples:
 
 ## Validation command
 
-If Redocly is configured:
+Redocly is the required local API validation tool.
+
+Before committing changes under `apis/`, run these commands from the `apis/` folder:
 
 ```bash
-npx @redocly/cli lint apis/family/openapi.yaml
+npm run api:lint
+npm run api:bundle
 ```
+
+Or run the combined check:
+
+```bash
+npm run api:check
+```
+
+If the commands cannot be run because Node.js, npm, or dependencies are unavailable, clearly state that in the final response.
+
+The bundled output is generated under `apis/dist/` and should not be committed.
+
+## Agent workflow
+
+Keep this process in `AGENTS.md` because it is repository-specific and should guide every future API change.
+
+A dedicated Codex skill is not necessary yet. Consider creating one only if the API workflow becomes reusable across multiple repositories or grows into a richer process with generation, breaking-change baselines, docs publishing, and CI orchestration.
+
+For larger API changes, an additional robustness step is to ask for an independent API review pass. Codex can use a subagent for that only when the user explicitly asks for subagent-based or delegated review.
 
 ## API checklist
 
 Before finishing an API task, check:
 
 - Is the functional API in its own folder?
+- Did Redocly lint pass?
+- Did Redocly bundle pass?
 - Are schemas resource-oriented?
 - Are read and write schemas separated only when their shapes differ?
 - Do POST payloads avoid server-generated fields and URL identifiers?

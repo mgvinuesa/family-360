@@ -1,0 +1,15 @@
+{
+  "name": "family-360-apis",
+  "private": true,
+  "scripts": {
+    "api:lint": "redocly lint --config redocly.yaml family/openapi.yaml",
+    "api:bundle": "redocly bundle --config redocly.yaml family/openapi.yaml --output dist/family-openapi.yaml",
+    "api:check": "npm run api:lint && npm run api:bundle"
+  },
+  "devDependencies": {
+    "@redocly/cli": "^2.31.6"
+  },
+  "engines": {
+    "node": ">=22.12.0 || >=20.19.0"
+  }
+}

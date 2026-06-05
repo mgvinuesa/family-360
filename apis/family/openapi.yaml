@@ -4,16 +4,27 @@ info:
   version: 0.1.0
   description: >
     API for managing families and their direct relationships. 
+  license:
+    name: Proprietary
+    identifier: LicenseRef-Proprietary
 servers:
-  - url: http://localhost:8080
-    description: Local development
+  - url: /api
+    description: Current deployment
 tags:
   - name: Families
+    description: Family root resources.
   - name: Family Users
+    description: User access relations for families.
   - name: Family Members
+    description: People represented in the family domain.
   - name: Households
+    description: Physical or economic places linked to a family.
   - name: Household Members
+    description: Residence relations between family members and households.
   - name: Financial Accounts
+    description: Family financial accounts without movements.
+security:
+  - bearerAuth: []
 paths:
   /families:
     get:
@@ -32,6 +43,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/FamilyPage'
+        '400':
+          $ref: '#/components/responses/ProblemResponse'
         default:
           $ref: '#/components/responses/ProblemResponse'
     post:
@@ -55,6 +68,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Family'
+        '400':
+          $ref: '#/components/responses/ProblemResponse'
         default:
           $ref: '#/components/responses/ProblemResponse'
 
@@ -73,6 +88,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Family'
+        '400':
+          $ref: '#/components/responses/ProblemResponse'
         default:
           $ref: '#/components/responses/ProblemResponse'
     patch:
@@ -93,6 +110,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Family'
+        '400':
+          $ref: '#/components/responses/ProblemResponse'
         default:
           $ref: '#/components/responses/ProblemResponse'
     delete:
@@ -103,6 +122,8 @@ paths:
       responses:
         '204':
           description: Family disabled
+        '400':
+          $ref: '#/components/responses/ProblemResponse'
         default:
           $ref: '#/components/responses/ProblemResponse'
 
@@ -125,6 +146,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/FamilyUserPage'
+        '400':
+          $ref: '#/components/responses/ProblemResponse'
         default:
           $ref: '#/components/responses/ProblemResponse'
     post:
@@ -148,6 +171,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/FamilyUser'
+        '400':
+          $ref: '#/components/responses/ProblemResponse'
         default:
           $ref: '#/components/responses/ProblemResponse'
 
@@ -167,6 +192,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/FamilyUser'
+        '400':
+          $ref: '#/components/responses/ProblemResponse'
         default:
           $ref: '#/components/responses/ProblemResponse'
     patch:
@@ -187,6 +214,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/FamilyUser'
+        '400':
+          $ref: '#/components/responses/ProblemResponse'
         default:
           $ref: '#/components/responses/ProblemResponse'
     delete:
@@ -197,6 +226,8 @@ paths:
       responses:
         '204':
           description: Family user relation disabled
+        '400':
+          $ref: '#/components/responses/ProblemResponse'
         default:
           $ref: '#/components/responses/ProblemResponse'
 
@@ -219,6 +250,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/FamilyMemberPage'
+        '400':
+          $ref: '#/components/responses/ProblemResponse'
         default:
           $ref: '#/components/responses/ProblemResponse'
     post:
@@ -242,6 +275,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/FamilyMember'
+        '400':
+          $ref: '#/components/responses/ProblemResponse'
         default:
           $ref: '#/components/responses/ProblemResponse'
 
@@ -261,6 +296,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/FamilyMember'
+        '400':
+          $ref: '#/components/responses/ProblemResponse'
         default:
           $ref: '#/components/responses/ProblemResponse'
     patch:
@@ -281,6 +318,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/FamilyMember'
+        '400':
+          $ref: '#/components/responses/ProblemResponse'
         default:
           $ref: '#/components/responses/ProblemResponse'
     delete:
@@ -291,6 +330,8 @@ paths:
       responses:
         '204':
           description: Family member disabled
+        '400':
+          $ref: '#/components/responses/ProblemResponse'
         default:
           $ref: '#/components/responses/ProblemResponse'
 
@@ -313,6 +354,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/HouseholdPage'
+        '400':
+          $ref: '#/components/responses/ProblemResponse'
         default:
           $ref: '#/components/responses/ProblemResponse'
     post:
@@ -336,6 +379,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Household'
+        '400':
+          $ref: '#/components/responses/ProblemResponse'
         default:
           $ref: '#/components/responses/ProblemResponse'
 
@@ -355,6 +400,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Household'
+        '400':
+          $ref: '#/components/responses/ProblemResponse'
         default:
           $ref: '#/components/responses/ProblemResponse'
     patch:
@@ -375,6 +422,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Household'
+        '400':
+          $ref: '#/components/responses/ProblemResponse'
         default:
           $ref: '#/components/responses/ProblemResponse'
     delete:
@@ -385,6 +434,8 @@ paths:
       responses:
         '204':
           description: Household disabled
+        '400':
+          $ref: '#/components/responses/ProblemResponse'
         default:
           $ref: '#/components/responses/ProblemResponse'
 
@@ -408,6 +459,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/HouseholdMemberPage'
+        '400':
+          $ref: '#/components/responses/ProblemResponse'
         default:
           $ref: '#/components/responses/ProblemResponse'
     post:
@@ -431,6 +484,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/HouseholdMember'
+        '400':
+          $ref: '#/components/responses/ProblemResponse'
         default:
           $ref: '#/components/responses/ProblemResponse'
 
@@ -451,6 +506,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/HouseholdMember'
+        '400':
+          $ref: '#/components/responses/ProblemResponse'
         default:
           $ref: '#/components/responses/ProblemResponse'
     patch:
@@ -471,6 +528,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/HouseholdMember'
+        '400':
+          $ref: '#/components/responses/ProblemResponse'
         default:
           $ref: '#/components/responses/ProblemResponse'
     delete:
@@ -481,6 +540,8 @@ paths:
       responses:
         '204':
           description: Household member relation removed
+        '400':
+          $ref: '#/components/responses/ProblemResponse'
         default:
           $ref: '#/components/responses/ProblemResponse'
 
@@ -503,6 +564,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/FinancialAccountPage'
+        '400':
+          $ref: '#/components/responses/ProblemResponse'
         default:
           $ref: '#/components/responses/ProblemResponse'
     post:
@@ -526,6 +589,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/FinancialAccount'
+        '400':
+          $ref: '#/components/responses/ProblemResponse'
         default:
           $ref: '#/components/responses/ProblemResponse'
 
@@ -545,6 +610,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/FinancialAccount'
+        '400':
+          $ref: '#/components/responses/ProblemResponse'
         default:
           $ref: '#/components/responses/ProblemResponse'
     patch:
@@ -565,6 +632,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/FinancialAccount'
+        '400':
+          $ref: '#/components/responses/ProblemResponse'
         default:
           $ref: '#/components/responses/ProblemResponse'
     delete:
@@ -575,10 +644,18 @@ paths:
       responses:
         '204':
           description: Financial account disabled
+        '400':
+          $ref: '#/components/responses/ProblemResponse'
         default:
           $ref: '#/components/responses/ProblemResponse'
 
 components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
   headers:
     Location:
       description: URI of the created resource

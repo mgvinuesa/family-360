@@ -25,3 +25,9 @@ replay_pid*
 
 # IDE files
 .idea/
+
+# Node.js dependencies
+node_modules/
+
+# Generated API artifacts
+apis/dist/

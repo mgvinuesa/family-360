@@ -1,0 +1,6 @@
+apis:
+  family:
+    root: ./family/openapi.yaml
+
+extends:
+  - recommended
