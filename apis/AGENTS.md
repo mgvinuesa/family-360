@@ -8,6 +8,18 @@ API changes should be contract-first.
 
 Do not implement backend or frontend code from this folder unless explicitly requested.
 
+## Required verification
+
+When working under `apis/`, always run the API verification command before the final response and before staging or committing API changes:
+
+```bash
+npm run api:check
+```
+
+Run it from the `apis/` folder.
+
+This command must pass for API changes to be considered complete. If it cannot be run, clearly state why in the final response.
+
 ## API organization
 
 Separate functional APIs into independent folders.

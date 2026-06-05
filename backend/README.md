@@ -4,6 +4,26 @@ Spring Boot backend application.
 
 See `backend/AGENTS.md` before implementing backend tasks.
 
+## Project Structure
+
+Backend documentation lives in this folder. Spring Boot applications live in
+dedicated subfolders so this area can host multiple backend applications over
+time.
+
+The first application is `ms-family-360`, a Maven reactor named `family-360`.
+
+Current `ms-family-360` modules:
+
+- `family-360-application`: deployable Spring Boot application. It depends on
+  the functional modules that are exposed by the backend.
+- `family-360-persistence`: shared persistence module for JPA entities,
+  repositories, Flyway migrations, and database-specific configuration.
+- `family`: functional module for the family bounded area.
+
+The intended direction is to keep each functional area in its own Maven module
+inside the application reactor. The deployable application module composes those
+functional modules and the shared persistence module.
+
 ## Requirements
 
 The backend is intended to run with:
@@ -86,6 +106,7 @@ JDK.
 Expected commands after the backend is scaffolded:
 
 ```bash
+cd ms-family-360
 ./mvnw clean verify
 ./mvnw spring-boot:run
 ```
@@ -93,6 +114,15 @@ Expected commands after the backend is scaffolded:
 On Windows PowerShell:
 
 ```powershell
+cd ms-family-360
 .\mvnw.cmd clean verify
 .\mvnw.cmd spring-boot:run
+```
+
+Until the Maven Wrapper is added, use the globally installed Maven command:
+
+```bash
+cd ms-family-360
+mvn clean verify
+mvn -pl family-360-application spring-boot:run
 ```

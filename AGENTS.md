@@ -67,6 +67,72 @@ Examples:
 
 This keeps tags readable, artifact-neutral, and aligned with trunk-based releases. Avoid backend-only or frontend-only tags unless the repository is intentionally split in the future.
 
+## Local multi-project workflow
+
+This repository is a monorepo, but local work should be isolated when several Codex conversations or contributors work in parallel.
+
+Use the current folder as the global project workspace:
+
+```text
+family-360/
+```
+
+The global workspace is useful for repository-wide review, integration, documentation, and final coordination.
+
+For parallel implementation work, create separate local projects with `git worktree`. Prefer one worktree per active development area or task:
+
+```text
+family-360/            # global / integration workspace
+family-360-backend/    # backend-focused workspace
+family-360-frontend/   # frontend-focused workspace
+family-360-apis/       # API-focused workspace
+```
+
+The default split should follow project areas:
+
+- `apis`
+- `backend`
+- `frontend`
+
+This can vary when a feature needs a narrower or broader isolation boundary.
+
+Recommended worktree commands:
+
+```bash
+git fetch
+git worktree add ../family-360-apis -b feature/family-api-validation origin/main
+git worktree add ../family-360-backend -b feature/backend-family-crud origin/main
+git worktree add ../family-360-frontend -b feature/frontend-shell origin/main
+```
+
+Remove completed worktrees after integration:
+
+```bash
+git worktree remove ../family-360-apis
+```
+
+When starting a new Codex conversation, always identify which workspace is being used and what scope it owns.
+
+Before changing files, check:
+
+```bash
+git status --short --branch
+git worktree list
+```
+
+If unrelated changes are present, assume they belong to another workspace, user, or Codex conversation. Do not include them in commits unless explicitly requested.
+
+Commit by scope, not by whatever happens to be in the working tree.
+
+Examples:
+
+- API task: stage only `apis/` and directly related root docs.
+- Backend task: stage only `backend/` and directly related root docs.
+- Frontend task: stage only `frontend/` and directly related root docs.
+- Integration task: may stage multiple areas, but the task must say so explicitly.
+
+Avoid running multiple Codex conversations that write to the same physical folder. Use worktrees for concurrent work to prevent accidental cross-commits.
+
 ## Domain principles
 
 ### Family is the main functional root
