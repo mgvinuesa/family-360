@@ -93,9 +93,7 @@ erDiagram
         uuid id PK
         uuid family_id FK
         uuid parent_id FK
-        string code
         string name
-        boolean system_category
         datetime created_at
         datetime disabled_at
     }

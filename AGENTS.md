@@ -34,6 +34,39 @@ The application should be built in a contract-first way, keeping backend, APIs, 
     └── skills/
 ```
 
+## Git workflow
+
+Prefer short iterations and a trunk-based development mindset.
+
+Branches should be short-lived and integrated frequently.
+
+Use these branch naming conventions:
+
+- New developments: `feature/XXXXX`
+- Fixes: `hotfix/XXXXX`
+
+`XXXXX` should be a short kebab-case title that describes the change.
+
+Examples:
+
+- `feature/family-api-contract`
+- `feature/backend-family-crud`
+- `hotfix/family-member-validation`
+
+Because this is a monorepo, product tags should version the whole repository state, not individual artifacts.
+
+Use date-based product tags:
+
+- Normal release: `vYYYY.MM.DD`
+- Multiple releases on the same day: `vYYYY.MM.DD.N`
+
+Examples:
+
+- `v2026.06.05`
+- `v2026.06.05.2`
+
+This keeps tags readable, artifact-neutral, and aligned with trunk-based releases. Avoid backend-only or frontend-only tags unless the repository is intentionally split in the future.
+
 ## Domain principles
 
 ### Family is the main functional root
