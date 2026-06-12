@@ -1,0 +1,4 @@
+interface:
+  display_name: "API Change Workflow"
+  short_description: "Contract-first API changes in baby steps"
+  default_prompt: "Use $api-change-workflow to implement this API-visible change contract-first in validated baby steps."
