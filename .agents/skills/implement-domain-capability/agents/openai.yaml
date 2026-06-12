@@ -1,0 +1,4 @@
+interface:
+  display_name: "Implement Domain Capability"
+  short_description: "Coordinate functional changes across layers"
+  default_prompt: "Use $implement-domain-capability to plan and implement this functional capability with explicit cross-layer scope."

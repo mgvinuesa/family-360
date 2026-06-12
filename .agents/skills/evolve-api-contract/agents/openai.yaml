@@ -1,0 +1,4 @@
+interface:
+  display_name: "Evolve API Contract"
+  short_description: "Evolve OpenAPI and generated boundaries"
+  default_prompt: "Use $evolve-api-contract to evolve this API contract and adapt its generated boundaries."

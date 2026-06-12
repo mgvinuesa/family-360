@@ -243,9 +243,14 @@ The bundled output is generated under `apis/dist/` and should not be committed.
 
 ## Agent workflow
 
-Keep this process in `AGENTS.md` because it is repository-specific and should guide every future API change.
+Use the repository skill `evolve-api-contract` for API contract changes,
+generated backend or frontend boundaries, and API adapter adaptations.
 
-A dedicated Codex skill is not necessary yet. Consider creating one only if the API workflow becomes reusable across multiple repositories or grows into a richer process with generation, breaking-change baselines, docs publishing, and CI orchestration.
+The API skill may adapt an HTTP or generated-code boundary when the application
+capability and semantics remain unchanged. It must not modify domain rules,
+application use cases, commands, queries, or ports. When those capabilities
+must change, activate `implement-application-capability` after obtaining
+confirmation, unless a confirmed functional plan already includes it.
 
 For larger API changes, an additional robustness step is to ask for an independent API review pass. Codex can use a subagent for that only when the user explicitly asks for subagent-based or delegated review.
 

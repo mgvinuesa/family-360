@@ -1,0 +1,4 @@
+interface:
+  display_name: "Implement Application Capability"
+  short_description: "Implement domain and application behavior"
+  default_prompt: "Use $implement-application-capability to implement this domain and application capability and assess adjacent-layer impact."
