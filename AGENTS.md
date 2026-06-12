@@ -24,6 +24,8 @@ The application should be built in a contract-first way, keeping backend, APIs, 
 ```text
 .
 ├── AGENTS.md
+├── docs/
+│   └── domains/
 ├── backend/
 │   └── AGENTS.md
 ├── apis/
@@ -33,6 +35,44 @@ The application should be built in a contract-first way, keeping backend, APIs, 
 └── .codex/
     └── skills/
 ```
+
+## Domain-oriented repository navigation
+
+Functional and technical documentation lives under:
+
+```text
+docs/domains/<domain>/
+```
+
+Use the same singular kebab-case domain identifier across repository areas
+whenever possible. For example, work on the `family` domain should start by
+reviewing:
+
+```text
+docs/domains/family/
+apis/family/
+backend/ms-family-360/family/
+frontend/src/app/features/family/
+```
+
+Backend paths have two explicit levels:
+
+- `backend/<service-id>/` identifies a deployable service and its Maven reactor.
+- `backend/<service-id>/<module-id>/` identifies a functional or technical
+  reactor module.
+
+A functional domain or sufficiently autonomous subdomain should normally map to
+a functional reactor module. Technical modules such as
+`family-360-application` and `family-360-persistence` do not represent domains.
+
+Each domain documentation folder must contain a `README.md` that describes the
+domain and lists its current API, backend, and frontend paths. Keep this mapping
+small and human-readable; do not add duplicated registries or metadata unless
+the repository later needs automated validation.
+
+When asked to work on a domain globally, inspect its documented paths first.
+Only modify multiple repository areas when the requested scope requires an
+integration change.
 
 ## Git workflow
 
