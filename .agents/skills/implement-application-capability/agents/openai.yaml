@@ -1,4 +1,4 @@
 interface:
   display_name: "Implement Application Capability"
-  short_description: "Implement domain and application behavior"
-  default_prompt: "Use $implement-application-capability to implement this domain and application capability and assess adjacent-layer impact."
+  short_description: "Implement scoped use cases and domain behavior"
+  default_prompt: "Use $implement-application-capability to implement this already scoped application change with one explicit UseCase class per business action."

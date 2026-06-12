@@ -44,10 +44,34 @@ Repository-scoped Codex skills live under:
 .agents/skills/
 ```
 
-Use `implement-domain-capability` to coordinate functional changes whose
-impact may cross architectural layers. It must classify the impact per layer,
-select the smallest set of technical skills, and request confirmation before
+Instruction precedence is:
+
+1. This root file defines product scope, repository-wide constraints, routing,
+   and delivery workflow.
+2. Area `AGENTS.md` files define architecture and validation for their area.
+3. The functional coordinator defines the confirmed scope for the current
+   task.
+4. Technical skills define how to execute inside that approved scope.
+
+Lower levels must not broaden requirements established by higher levels.
+
+Use `implement-domain-capability` as the mandatory entry point for functional
+requests such as CRUD, new business actions, or end-to-end domain behavior.
+The coordinator owns scope and sequencing; it does not implement the domain
+model itself. It must classify impact per layer, select the smallest set of
+technical skills, and request confirmation before adding inferred behavior or
 expanding beyond the user's approved scope.
+
+Technical skills may be invoked directly only for clearly bounded technical
+work whose product semantics and affected layer are already explicit, such as
+correcting an OpenAPI parameter name or refactoring one existing use case.
+When a technical skill discovers a new capability or another layer is needed,
+return control to `implement-domain-capability` instead of chaining technical
+skills directly.
+
+Explicitly naming a technical skill does not waive coordination when the same
+request asks for a functional outcome such as CRUD. In that case, use the
+named technical skill under an `implement-domain-capability` scope plan.
 
 Technical skills own responsibilities rather than isolated file sets. Each
 technical skill must inspect adjacent-layer contracts and classify discovered
@@ -62,6 +86,8 @@ layer.
 - Do not create alternative production adapters merely to avoid a required
   layer change.
 - Keep unavailable or excluded layer work explicit as deferred or blocked.
+- Repository principles and domain documentation constrain implementation but
+  do not automatically add product capabilities to the current task.
 
 The currently available technical skills are:
 
@@ -72,6 +98,11 @@ Persistence work will receive a dedicated skill later. Until then, do not use
 the existing skills to modify Flyway migrations, JPA entities, Spring Data
 repositories, or persistent output adapters as an implicit part of API or
 application work.
+
+When persistence or another unsupported layer is required for the requested
+functional outcome, the coordinator must state that the capability cannot be
+completed and ask whether a partial implementation is wanted. Do not proceed
+with a contract-only or application-only skeleton by assumption.
 
 ## Domain-oriented repository navigation
 
@@ -335,6 +366,18 @@ For API-visible features:
 
 When working on one area, avoid unrelated changes in other areas.
 
+Before implementing a functional request, distinguish:
+
+- Explicitly requested behavior.
+- Technical consequences required to implement that behavior.
+- Plausible or documented product capabilities that were not requested.
+- Cross-cutting safeguards that do not create new user-visible behavior.
+
+Do not implement the third category without confirmation. In particular,
+authentication, authorization, roles, ownership, invitations, audit workflows,
+and lifecycle policies are functional capabilities, not implicit technical
+details of CRUD.
+
 Examples:
 
 - Backend task: do not modify frontend unless explicitly requested.
@@ -356,9 +399,17 @@ Do not log:
 
 Use masked values where applicable.
 
-Family data access must always be scoped by family membership.
+Security and privacy safeguards always apply. Avoid introducing data leaks,
+unsafe defaults, insecure logging, missing input boundaries, or accidental
+cross-family data access in code that is already within scope.
 
-A user should only access a family if there is a valid `FamilyUser` relation.
+Authentication, authorization, family membership enforcement, roles, and
+permission workflows are product capabilities. Implement them only when the
+task explicitly requests them or the user confirms them after they are raised
+as a scope decision.
+
+When family access control is part of the approved capability, a user should
+only access a family if there is a valid `FamilyUser` relation.
 
 
 ## Definition of done

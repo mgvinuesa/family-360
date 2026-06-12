@@ -1,6 +1,6 @@
 ---
 name: implement-application-capability
-description: Implement backend domain and application behavior, including rules, use cases, commands, queries, ports, and input or output adapters that do not require concrete persistence integration. Use for new business behavior, authorization, validation, orchestration, or application contracts. Detect API and persistence impact, and request the corresponding skill before changing those layers.
+description: Implement an already scoped backend domain and application change through explicit use-case classes, commands, queries, rules, and ports. Use directly only for application-layer tasks whose functional scope is explicit and does not require cross-layer planning; for CRUD, new business behavior, API-visible work, or uncertain multi-layer impact, use implement-domain-capability first.
 ---
 
 # Implement Application Capability
@@ -12,9 +12,16 @@ Own domain and application behavior and assess every adjacent boundary.
 1. Read the root and backend `AGENTS.md` files.
 2. Inspect `docs/domains/<domain>/README.md` and the functional backend module.
 3. Check repository and worktree status before editing.
-4. Describe the business outcome, actors, authorization, invariants, inputs,
-   outputs, and failure cases.
-5. Inspect existing API adapters and persistence adapters to understand current
+4. Read the coordinator-approved scope ledger when one exists. Otherwise
+   classify the request as application-only before editing.
+5. List explicit actions, required invariants, inputs, outputs, and failure
+   cases. Separate requested behavior from inferred behavior.
+6. Treat authentication, authorization, roles, ownership, invitations, and
+   audit behavior as product capabilities. Do not add them unless they are in
+   the approved scope.
+7. Apply cross-cutting secure coding and privacy safeguards without inventing
+   those product capabilities.
+8. Inspect existing API adapters and persistence adapters to understand current
    contracts without assuming they must change.
 
 ## Analyze Adjacent-Layer Impact
@@ -31,12 +38,13 @@ Classify each discovered impact:
   criterion, transaction behavior, repository operation, or persistent mapping
   is required.
 
-Implement application-local changes and adapters owned by the application
-module. Do not change OpenAPI or generated API code directly. For API impact:
+Implement application-local changes and application composition owned by the
+functional module. Do not change OpenAPI, generated API code, HTTP adapters, or
+concrete persistence adapters directly. For API impact:
 
 1. Explain the required contract or boundary change.
-2. Request confirmation to activate `$evolve-api-contract`, unless it is
-   already included in the coordinator-approved plan.
+2. Return the impact to `$implement-domain-capability` for a scope decision,
+   unless the coordinator-approved plan already includes API work.
 
 Persistence is not yet supported by a dedicated repository skill. Do not
 modify Flyway, JPA entities, Spring Data repositories, or concrete persistent
@@ -51,9 +59,14 @@ adapters. When required:
 
 ## Implement The Capability
 
-Prefer explicit concepts:
+Follow the backend architecture in `backend/AGENTS.md`:
 
-- Small use cases named after business actions.
+- Implement one concrete `*UseCase` class per business action, such as
+  `CreateFamilyUseCase`, `GetFamilyUseCase`, or `ListFamilyMembersUseCase`.
+- Do not group multiple actions behind generic implementations such as
+  `FamilyApplicationService`, `FamilyOperations`, or CRUD manager classes.
+- A generated or handwritten HTTP adapter may depend on several input ports,
+  but each port represents one business action.
 - Commands for state-changing inputs.
 - Queries for reads and search criteria.
 - Domain value objects and enums for meaningful constraints.
@@ -62,19 +75,19 @@ Prefer explicit concepts:
 - Domain/application exceptions mapped by boundary adapters.
 
 Keep generated API types and persistence entities outside domain and
-application contracts. Enforce family membership, role authorization, and
-resource scoping at the appropriate application boundary.
+application contracts. Implement authorization or resource-scoping behavior
+only when included in the approved functional scope.
 
-Adapters may be updated when they translate an existing external capability to
-the changed application contract. If the adapter's external layer needs a new
-capability, activate the corresponding technical skill instead.
+If an adjacent layer needs a new capability, return control to the coordinator
+instead of activating another technical skill directly.
 
 ## Test
 
 Add tests at the lowest useful level:
 
 - Domain tests for invariants and state transitions.
-- Use-case tests for orchestration, authorization, and failures.
+- Use-case tests for orchestration, approved authorization behavior, and
+  failures.
 - Port interaction tests for required collaborations.
 - Adapter tests only for adapters changed within approved scope.
 

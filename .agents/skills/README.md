@@ -4,13 +4,29 @@ This folder contains repository-scoped Codex skills for Family 360. Skills
 complement the mandatory rules in `AGENTS.md`; they provide reusable workflows
 and layer-specific decision boundaries.
 
+## Authority Chain
+
+Apply repository instructions in this order:
+
+1. Root `AGENTS.md`: product scope, repository-wide constraints, skill routing,
+   and Git workflow.
+2. Area `AGENTS.md`: API, backend, or frontend architecture and validation.
+3. `implement-domain-capability`: task-specific functional scope and approved
+   layer plan.
+4. Technical skill: implementation procedure inside one approved
+   responsibility.
+
+A lower level may make local implementation decisions but must not broaden the
+scope established by a higher level.
+
 ## Functional Coordinator
 
 ### `implement-domain-capability`
 
 Coordinate a functional domain change, classify its impact by layer, obtain
 confirmation for scope expansions, invoke the required technical skills, and
-validate the combined result.
+validate the combined result. Despite its name, this is a functional
+coordinator, not the owner of domain-model implementation.
 
 ## Technical Skills
 
@@ -18,14 +34,15 @@ validate the combined result.
 
 Own OpenAPI contracts, generated backend and frontend boundaries, HTTP
 adapters, and API mappings. It may adapt a boundary when application semantics
-remain unchanged, but it must activate the application skill for new
-application capabilities.
+remain unchanged, but it must return to the functional coordinator when it
+discovers a new application capability.
 
 ### `implement-application-capability`
 
-Own domain rules, use cases, commands, queries, ports, authorization, and
-application behavior. It assesses API and persistence impact without changing
-those layers implicitly.
+Own domain rules, one class per business use case, commands, queries, ports, and
+application behavior already included in the confirmed scope. Authorization is
+implemented only when explicitly approved. The skill assesses API and
+persistence impact without changing those layers implicitly.
 
 ## Planned Skills
 
@@ -36,8 +53,8 @@ blocked and must not create substitute production adapters.
 
 ## Invocation
 
-Codex may activate a skill when its description matches the request. Skills can
-also be selected explicitly:
+Use the coordinator for functional outcomes and the technical skills for
+bounded layer work:
 
 ```text
 Use $implement-domain-capability to implement family search by member name.
@@ -48,5 +65,12 @@ Use $evolve-api-contract to correct the pageSize query parameter name without
 changing application behavior.
 ```
 
-`AGENTS.md` remains authoritative for repository structure, Git workflow,
-security, and validation.
+If a request names a technical skill but also asks for CRUD or another
+functional outcome, activate the coordinator as well and run the named skill
+inside the confirmed scope.
+
+Do not chain technical skills directly when a new capability or layer is
+discovered. Return to the coordinator for a scope decision.
+
+`AGENTS.md` remains authoritative for repository structure, architecture,
+scope, Git workflow, security safeguards, and validation.

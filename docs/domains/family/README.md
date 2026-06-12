@@ -9,7 +9,11 @@ users with family access and family members who may not have a user account.
 - Family creation and lifecycle.
 - Family access through `FamilyUser`.
 - Family members represented by `FamilyMember`.
-- Family-scoped authorization.
+- Family-scoped authorization as a separate capability when requested.
+
+This document maps the domain and its possible capabilities. Items listed here
+do not automatically enter the scope of every family task. For example, family
+CRUD does not implicitly include authentication, roles, or authorization.
 
 Households, expenses, contracts, and financial accounts relate to a family but
 may evolve as independent functional domains and reactor modules.
