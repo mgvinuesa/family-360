@@ -1,14 +1,18 @@
 package dev.mgvinuesa.family360.family.configuration;
 
-import dev.mgvinuesa.family360.family.application.port.in.FamilyMemberOperations;
-import dev.mgvinuesa.family360.family.application.port.in.FamilyOperations;
-import dev.mgvinuesa.family360.family.application.port.out.AuthenticatedUserProvider;
-import dev.mgvinuesa.family360.family.application.port.out.FamilyAccessPort;
 import dev.mgvinuesa.family360.family.application.port.out.FamilyMemberRepository;
 import dev.mgvinuesa.family360.family.application.port.out.FamilyRepository;
 import dev.mgvinuesa.family360.family.application.port.out.IdentifierGenerator;
-import dev.mgvinuesa.family360.family.application.service.FamilyApplicationService;
-import dev.mgvinuesa.family360.family.application.service.FamilyMemberApplicationService;
+import dev.mgvinuesa.family360.family.application.usecase.CreateFamilyMemberUseCase;
+import dev.mgvinuesa.family360.family.application.usecase.CreateFamilyUseCase;
+import dev.mgvinuesa.family360.family.application.usecase.DisableFamilyMemberUseCase;
+import dev.mgvinuesa.family360.family.application.usecase.DisableFamilyUseCase;
+import dev.mgvinuesa.family360.family.application.usecase.GetFamilyMemberUseCase;
+import dev.mgvinuesa.family360.family.application.usecase.GetFamilyUseCase;
+import dev.mgvinuesa.family360.family.application.usecase.ListFamiliesUseCase;
+import dev.mgvinuesa.family360.family.application.usecase.ListFamilyMembersUseCase;
+import dev.mgvinuesa.family360.family.application.usecase.UpdateFamilyMemberUseCase;
+import dev.mgvinuesa.family360.family.application.usecase.UpdateFamilyUseCase;
 import java.time.Clock;
 import java.util.UUID;
 import org.springframework.context.annotation.Bean;
@@ -28,38 +32,75 @@ public class FamilyModuleConfiguration {
     }
 
     @Bean
-    FamilyOperations familyOperations(
+    CreateFamilyUseCase createFamilyUseCase(
             FamilyRepository familyRepository,
-            FamilyAccessPort familyAccessPort,
-            AuthenticatedUserProvider authenticatedUserProvider,
             IdentifierGenerator identifierGenerator,
             Clock familyClock
     ) {
-        return new FamilyApplicationService(
+        return new CreateFamilyUseCase(familyRepository, identifierGenerator, familyClock);
+    }
+
+    @Bean
+    GetFamilyUseCase getFamilyUseCase(FamilyRepository familyRepository) {
+        return new GetFamilyUseCase(familyRepository);
+    }
+
+    @Bean
+    ListFamiliesUseCase listFamiliesUseCase(FamilyRepository familyRepository) {
+        return new ListFamiliesUseCase(familyRepository);
+    }
+
+    @Bean
+    UpdateFamilyUseCase updateFamilyUseCase(FamilyRepository familyRepository) {
+        return new UpdateFamilyUseCase(familyRepository);
+    }
+
+    @Bean
+    DisableFamilyUseCase disableFamilyUseCase(FamilyRepository familyRepository, Clock familyClock) {
+        return new DisableFamilyUseCase(familyRepository, familyClock);
+    }
+
+    @Bean
+    CreateFamilyMemberUseCase createFamilyMemberUseCase(
+            FamilyRepository familyRepository,
+            FamilyMemberRepository familyMemberRepository,
+            IdentifierGenerator identifierGenerator,
+            Clock familyClock
+    ) {
+        return new CreateFamilyMemberUseCase(
                 familyRepository,
-                familyAccessPort,
-                authenticatedUserProvider,
+                familyMemberRepository,
                 identifierGenerator,
                 familyClock
         );
     }
 
     @Bean
-    FamilyMemberOperations familyMemberOperations(
+    GetFamilyMemberUseCase getFamilyMemberUseCase(FamilyMemberRepository familyMemberRepository) {
+        return new GetFamilyMemberUseCase(familyMemberRepository);
+    }
+
+    @Bean
+    ListFamilyMembersUseCase listFamilyMembersUseCase(
             FamilyRepository familyRepository,
+            FamilyMemberRepository familyMemberRepository
+    ) {
+        return new ListFamilyMembersUseCase(familyRepository, familyMemberRepository);
+    }
+
+    @Bean
+    UpdateFamilyMemberUseCase updateFamilyMemberUseCase(
             FamilyMemberRepository familyMemberRepository,
-            FamilyAccessPort familyAccessPort,
-            AuthenticatedUserProvider authenticatedUserProvider,
-            IdentifierGenerator identifierGenerator,
             Clock familyClock
     ) {
-        return new FamilyMemberApplicationService(
-                familyRepository,
-                familyMemberRepository,
-                familyAccessPort,
-                authenticatedUserProvider,
-                identifierGenerator,
-                familyClock
-        );
+        return new UpdateFamilyMemberUseCase(familyMemberRepository, familyClock);
+    }
+
+    @Bean
+    DisableFamilyMemberUseCase disableFamilyMemberUseCase(
+            FamilyMemberRepository familyMemberRepository,
+            Clock familyClock
+    ) {
+        return new DisableFamilyMemberUseCase(familyMemberRepository, familyClock);
     }
 }

@@ -8,11 +8,9 @@ import java.util.UUID;
 
 public interface FamilyRepository {
 
-    Family createWithOwner(Family family, UUID ownerUserId);
-
     Family save(Family family);
 
     Optional<Family> findById(UUID familyId);
 
-    PageResult<Family> findActiveByUserId(UUID userId, PageQuery pageQuery);
+    PageResult<Family> findActive(PageQuery pageQuery);
 }

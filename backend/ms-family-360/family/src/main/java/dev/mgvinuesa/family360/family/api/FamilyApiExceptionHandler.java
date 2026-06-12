@@ -1,8 +1,6 @@
 package dev.mgvinuesa.family360.family.api;
 
 import dev.mgvinuesa.family360.family.api.v1.model.Problem;
-import dev.mgvinuesa.family360.family.application.exception.AuthenticationRequiredException;
-import dev.mgvinuesa.family360.family.application.exception.FamilyAccessDeniedException;
 import dev.mgvinuesa.family360.family.application.exception.FamilyMemberNotFoundException;
 import dev.mgvinuesa.family360.family.application.exception.FamilyNotFoundException;
 import dev.mgvinuesa.family360.family.domain.DomainValidationException;
@@ -16,16 +14,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice(basePackages = "dev.mgvinuesa.family360.family.api")
 public class FamilyApiExceptionHandler {
-
-    @ExceptionHandler(AuthenticationRequiredException.class)
-    ResponseEntity<Problem> handleAuthenticationRequired(AuthenticationRequiredException exception) {
-        return problem(HttpStatus.UNAUTHORIZED, "Authentication required", exception.getMessage());
-    }
-
-    @ExceptionHandler(FamilyAccessDeniedException.class)
-    ResponseEntity<Problem> handleAccessDenied(FamilyAccessDeniedException exception) {
-        return problem(HttpStatus.FORBIDDEN, "Family access denied", exception.getMessage());
-    }
 
     @ExceptionHandler({FamilyNotFoundException.class, FamilyMemberNotFoundException.class})
     ResponseEntity<Problem> handleNotFound(RuntimeException exception) {

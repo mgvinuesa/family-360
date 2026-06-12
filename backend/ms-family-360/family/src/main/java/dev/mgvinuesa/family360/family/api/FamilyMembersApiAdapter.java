@@ -7,8 +7,12 @@ import dev.mgvinuesa.family360.family.api.v1.model.FamilyMemberPage;
 import dev.mgvinuesa.family360.family.api.v1.model.FamilyMemberPatch;
 import dev.mgvinuesa.family360.family.application.model.PageQuery;
 import dev.mgvinuesa.family360.family.application.port.in.CreateFamilyMemberCommand;
-import dev.mgvinuesa.family360.family.application.port.in.FamilyMemberOperations;
 import dev.mgvinuesa.family360.family.application.port.in.UpdateFamilyMemberCommand;
+import dev.mgvinuesa.family360.family.application.usecase.CreateFamilyMemberUseCase;
+import dev.mgvinuesa.family360.family.application.usecase.DisableFamilyMemberUseCase;
+import dev.mgvinuesa.family360.family.application.usecase.GetFamilyMemberUseCase;
+import dev.mgvinuesa.family360.family.application.usecase.ListFamilyMembersUseCase;
+import dev.mgvinuesa.family360.family.application.usecase.UpdateFamilyMemberUseCase;
 import dev.mgvinuesa.family360.family.domain.FamilyMemberType;
 import java.net.URI;
 import java.util.UUID;
@@ -18,15 +22,29 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class FamilyMembersApiAdapter implements FamilyMembersApi {
 
-    private final FamilyMemberOperations familyMemberOperations;
+    private final CreateFamilyMemberUseCase createFamilyMemberUseCase;
+    private final GetFamilyMemberUseCase getFamilyMemberUseCase;
+    private final ListFamilyMembersUseCase listFamilyMembersUseCase;
+    private final UpdateFamilyMemberUseCase updateFamilyMemberUseCase;
+    private final DisableFamilyMemberUseCase disableFamilyMemberUseCase;
 
-    public FamilyMembersApiAdapter(FamilyMemberOperations familyMemberOperations) {
-        this.familyMemberOperations = familyMemberOperations;
+    public FamilyMembersApiAdapter(
+            CreateFamilyMemberUseCase createFamilyMemberUseCase,
+            GetFamilyMemberUseCase getFamilyMemberUseCase,
+            ListFamilyMembersUseCase listFamilyMembersUseCase,
+            UpdateFamilyMemberUseCase updateFamilyMemberUseCase,
+            DisableFamilyMemberUseCase disableFamilyMemberUseCase
+    ) {
+        this.createFamilyMemberUseCase = createFamilyMemberUseCase;
+        this.getFamilyMemberUseCase = getFamilyMemberUseCase;
+        this.listFamilyMembersUseCase = listFamilyMembersUseCase;
+        this.updateFamilyMemberUseCase = updateFamilyMemberUseCase;
+        this.disableFamilyMemberUseCase = disableFamilyMemberUseCase;
     }
 
     @Override
     public ResponseEntity<FamilyMember> createFamilyMember(UUID familyId, FamilyMemberInput input) {
-        FamilyMember member = FamilyApiMapper.toApi(familyMemberOperations.createFamilyMember(
+        FamilyMember member = FamilyApiMapper.toApi(createFamilyMemberUseCase.execute(
                 new CreateFamilyMemberCommand(
                         familyId,
                         input.getName(),
@@ -40,14 +58,14 @@ public class FamilyMembersApiAdapter implements FamilyMembersApi {
 
     @Override
     public ResponseEntity<Void> disableFamilyMember(UUID familyId, UUID memberId) {
-        familyMemberOperations.disableFamilyMember(familyId, memberId);
+        disableFamilyMemberUseCase.execute(familyId, memberId);
         return ResponseEntity.noContent().build();
     }
 
     @Override
     public ResponseEntity<FamilyMember> getFamilyMember(UUID familyId, UUID memberId) {
         return ResponseEntity.ok(FamilyApiMapper.toApi(
-                familyMemberOperations.getFamilyMember(familyId, memberId)
+                getFamilyMemberUseCase.execute(familyId, memberId)
         ));
     }
 
@@ -59,7 +77,7 @@ public class FamilyMembersApiAdapter implements FamilyMembersApi {
             String sort
     ) {
         return ResponseEntity.ok(FamilyApiMapper.toMemberPage(
-                familyMemberOperations.listFamilyMembers(familyId, new PageQuery(page, limit, sort))
+                listFamilyMembersUseCase.execute(familyId, new PageQuery(page, limit, sort))
         ));
     }
 
@@ -72,7 +90,7 @@ public class FamilyMembersApiAdapter implements FamilyMembersApi {
         FamilyMemberType memberType = patch.getMemberType() == null
                 ? null
                 : FamilyMemberType.valueOf(patch.getMemberType().name());
-        return ResponseEntity.ok(FamilyApiMapper.toApi(familyMemberOperations.updateFamilyMember(
+        return ResponseEntity.ok(FamilyApiMapper.toApi(updateFamilyMemberUseCase.execute(
                 new UpdateFamilyMemberCommand(
                         familyId,
                         memberId,

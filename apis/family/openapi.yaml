@@ -43,8 +43,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/FamilyPage'
-        '401':
-          $ref: '#/components/responses/UnauthorizedProblem'
+        '400':
+          $ref: '#/components/responses/ProblemResponse'
         default:
           $ref: '#/components/responses/ProblemResponse'
     post:
@@ -68,8 +68,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Family'
-        '401':
-          $ref: '#/components/responses/UnauthorizedProblem'
+        '400':
+          $ref: '#/components/responses/ProblemResponse'
         '422':
           $ref: '#/components/responses/ValidationProblem'
         default:
@@ -90,10 +90,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Family'
-        '401':
-          $ref: '#/components/responses/UnauthorizedProblem'
-        '403':
-          $ref: '#/components/responses/ForbiddenProblem'
         '404':
           $ref: '#/components/responses/NotFoundProblem'
         default:
@@ -116,10 +112,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Family'
-        '401':
-          $ref: '#/components/responses/UnauthorizedProblem'
-        '403':
-          $ref: '#/components/responses/ForbiddenProblem'
         '404':
           $ref: '#/components/responses/NotFoundProblem'
         '422':
@@ -134,10 +126,6 @@ paths:
       responses:
         '204':
           description: Family disabled
-        '401':
-          $ref: '#/components/responses/UnauthorizedProblem'
-        '403':
-          $ref: '#/components/responses/ForbiddenProblem'
         '404':
           $ref: '#/components/responses/NotFoundProblem'
         default:
@@ -266,10 +254,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/FamilyMemberPage'
-        '401':
-          $ref: '#/components/responses/UnauthorizedProblem'
-        '403':
-          $ref: '#/components/responses/ForbiddenProblem'
         '404':
           $ref: '#/components/responses/NotFoundProblem'
         default:
@@ -295,10 +279,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/FamilyMember'
-        '401':
-          $ref: '#/components/responses/UnauthorizedProblem'
-        '403':
-          $ref: '#/components/responses/ForbiddenProblem'
         '404':
           $ref: '#/components/responses/NotFoundProblem'
         '422':
@@ -322,10 +302,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/FamilyMember'
-        '401':
-          $ref: '#/components/responses/UnauthorizedProblem'
-        '403':
-          $ref: '#/components/responses/ForbiddenProblem'
         '404':
           $ref: '#/components/responses/NotFoundProblem'
         default:
@@ -348,10 +324,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/FamilyMember'
-        '401':
-          $ref: '#/components/responses/UnauthorizedProblem'
-        '403':
-          $ref: '#/components/responses/ForbiddenProblem'
         '404':
           $ref: '#/components/responses/NotFoundProblem'
         '422':
@@ -366,10 +338,6 @@ paths:
       responses:
         '204':
           description: Family member disabled
-        '401':
-          $ref: '#/components/responses/UnauthorizedProblem'
-        '403':
-          $ref: '#/components/responses/ForbiddenProblem'
         '404':
           $ref: '#/components/responses/NotFoundProblem'
         default:
@@ -773,18 +741,6 @@ components:
   responses:
     ProblemResponse:
       description: Error response
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/Problem'
-    UnauthorizedProblem:
-      description: Authentication is required
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/Problem'
-    ForbiddenProblem:
-      description: The current user cannot perform the operation
       content:
         application/problem+json:
           schema:
