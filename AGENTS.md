@@ -93,6 +93,23 @@ Examples:
 - `feature/backend-family-crud`
 - `hotfix/family-member-validation`
 
+For every task that requires modifying repository files:
+
+1. Check `git status --short --branch` and `git worktree list`.
+2. Create or switch to a task-specific `feature/` or `hotfix/` branch before
+   the first file edit. Do this without waiting for an explicit user request.
+3. Keep commits scoped and intentional. For complex work, create small commits
+   after independently meaningful and verified milestones instead of one large
+   final commit.
+4. Run the relevant validation commands before publishing.
+5. When the task is complete and validated, push the branch and open a pull
+   request without waiting for an explicit user request.
+
+The automatic branch, push, and pull request workflow does not apply when the
+user explicitly asks not to publish changes or when the task is read-only and
+does not modify repository files. Pull requests should be created as drafts
+unless the user explicitly requests a ready-for-review pull request.
+
 Because this is a monorepo, product tags should version the whole repository state, not individual artifacts.
 
 Use date-based product tags:
@@ -311,11 +328,14 @@ A user should only access a family if there is a valid `FamilyUser` relation.
 
 A task is complete when:
 
+- Work was performed on a task-specific branch when repository files changed.
 - The relevant API contract is updated if needed.
 - Backend implementation is complete when required.
 - Frontend implementation is complete when required.
 - Tests are added or updated when behavior changes.
 - Relevant build/test commands pass, or the reason they could not be run is clearly stated.
+- Validated changes are committed, pushed, and exposed through a pull request
+  unless the user explicitly requested otherwise.
 - The final response summarizes changed files and important decisions.
 
 ## Preferred implementation style
