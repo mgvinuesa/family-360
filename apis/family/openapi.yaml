@@ -8,8 +8,8 @@ info:
     name: Proprietary
     identifier: LicenseRef-Proprietary
 servers:
-  - url: /api
-    description: Current deployment
+  - url: /api/v1
+    description: Family API major version 1
 tags:
   - name: Families
     description: Family root resources.
