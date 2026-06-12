@@ -32,9 +32,46 @@ The application should be built in a contract-first way, keeping backend, APIs, 
 │   └── AGENTS.md
 ├── frontend/
 │   └── AGENTS.md
-└── .codex/
+└── .agents/
     └── skills/
 ```
+
+## Repository skills
+
+Repository-scoped Codex skills live under:
+
+```text
+.agents/skills/
+```
+
+Use `implement-domain-capability` to coordinate functional changes whose
+impact may cross architectural layers. It must classify the impact per layer,
+select the smallest set of technical skills, and request confirmation before
+expanding beyond the user's approved scope.
+
+Technical skills own responsibilities rather than isolated file sets. Each
+technical skill must inspect adjacent-layer contracts and classify discovered
+impact as local work, boundary adaptation, or a capability change in another
+layer.
+
+- A boundary adaptation may be implemented by the skill responsible for that
+  boundary when adjacent semantics remain unchanged.
+- A capability change in another layer requires that layer's technical skill.
+- Before activating another skill, request confirmation unless the functional
+  coordinator's confirmed plan already includes that layer.
+- Do not create alternative production adapters merely to avoid a required
+  layer change.
+- Keep unavailable or excluded layer work explicit as deferred or blocked.
+
+The currently available technical skills are:
+
+- `evolve-api-contract`
+- `implement-application-capability`
+
+Persistence work will receive a dedicated skill later. Until then, do not use
+the existing skills to modify Flyway migrations, JPA entities, Spring Data
+repositories, or persistent output adapters as an implicit part of API or
+application work.
 
 ## Domain-oriented repository navigation
 

@@ -68,7 +68,23 @@ Avoid dumping all logic into a single generic service.
 - Use MapStruct where it improves clarity.
 - Do not expose JPA entities through controllers.
 
+Use `evolve-api-contract` for OpenAPI, generated backend boundaries, HTTP
+adapters, and API mappings. Use `implement-application-capability` for domain
+rules, use cases, commands, queries, ports, and application behavior.
+
+A skill may adapt a boundary it owns when adjacent semantics remain unchanged.
+If a change requires a new capability in another layer, activate that layer's
+skill after confirmation unless it was already approved by the functional
+coordinator.
+
 ## Persistence
+
+Persistence changes are intentionally excluded from the current API and
+application skills. Until a dedicated persistence skill is defined, do not
+modify Flyway migrations, JPA entities, Spring Data repositories, or concrete
+persistent adapters as an implicit consequence of API or application work.
+Define required application ports when appropriate, then report concrete
+persistence implementation as deferred or blocked.
 
 - Use Flyway migrations.
 - Do not rely on Hibernate DDL auto-generation for real schema evolution.

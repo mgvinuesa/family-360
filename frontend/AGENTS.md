@@ -41,6 +41,14 @@ frontend/src/app/
 - Do not manually edit generated API code.
 - Keep mapping/adaptation code outside generated files.
 
+Use `evolve-api-contract` when an OpenAPI change requires frontend client
+generation or adaptation at the generated-client boundary. Regeneration alone
+does not authorize changes to feature behavior or presentation.
+
+If generated changes require new frontend behavior beyond adapting an existing
+boundary, report that as a frontend capability change and request confirmation
+before expanding the task. Do not introduce handwritten HTTP workarounds.
+
 ## UI priorities for MVP
 
 Prioritize:
