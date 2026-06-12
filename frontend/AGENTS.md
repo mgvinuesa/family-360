@@ -46,8 +46,9 @@ generation or adaptation at the generated-client boundary. Regeneration alone
 does not authorize changes to feature behavior or presentation.
 
 If generated changes require new frontend behavior beyond adapting an existing
-boundary, report that as a frontend capability change and request confirmation
-before expanding the task. Do not introduce handwritten HTTP workarounds.
+boundary, return the impact to `implement-domain-capability` for a scope
+decision unless frontend behavior is already in its confirmed plan. Do not
+introduce handwritten HTTP workarounds.
 
 ## UI priorities for MVP
 
@@ -75,7 +76,8 @@ Frontend can handle:
 - Filtering/sorting UI state
 - User-friendly formatting
 
-Backend must own:
+Backend owns these behaviors when they are part of the approved functional
+scope:
 
 - Authorization
 - Family membership checks
