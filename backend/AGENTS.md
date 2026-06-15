@@ -39,16 +39,44 @@ backend/src/main/java/.../
 └── shared/
 ```
 
-Each functional area may contain:
+Each functional area should use:
 
 ```text
 application/
 domain/
 infrastructure/
-api/
+|-- adapter/
+|   |-- in/
+|   |   `-- http/
+|   `-- out/
+|       `-- <technology>/
+`-- configuration/
 ```
 
-Prefer explicit use cases over large generic services.
+Use `infrastructure.adapter.in.<technology>` for adapters that invoke
+application use cases and `infrastructure.adapter.out.<technology>` for
+adapters that implement application output ports.
+
+Examples:
+
+- `infrastructure.adapter.in.http` for controllers, generated-interface
+  implementations, HTTP mappers, and HTTP exception handlers.
+- `infrastructure.adapter.in.messaging` for message consumers.
+- `infrastructure.adapter.out.persistence` for persistent adapters, entity
+  mappings, and framework repositories.
+- `infrastructure.adapter.out.rest` for HTTP clients to external systems.
+- `infrastructure.configuration` for Spring composition and module wiring.
+
+Keep application contracts under `application.port.in` and
+`application.port.out`; ports are not adapters. Generated OpenAPI interfaces
+and models may remain in a versioned `api` package such as `api.v1`, but
+handwritten implementations of those interfaces belong under
+`infrastructure.adapter.in.http`. Do not use root-level `api`,
+`repository`, or `persistence` packages for handwritten adapters.
+
+Implement one explicit use-case class per business action. Use the
+`<Action><Concept>UseCase` naming convention unless the existing module has a
+more specific established pattern.
 
 Good examples:
 
@@ -60,6 +88,12 @@ Good examples:
 
 Avoid dumping all logic into a single generic service.
 
+Do not implement several CRUD actions in aggregate classes such as
+`FamilyApplicationService`, `FamilyOperations`, `FamilyManager`, or generic
+CRUD services. HTTP adapters may collaborate with multiple use-case input
+ports, but each action must remain independently named, testable, and
+injectable.
+
 ## DTOs and API contracts
 
 - API DTOs should come from OpenAPI generation when possible.
@@ -68,14 +102,19 @@ Avoid dumping all logic into a single generic service.
 - Use MapStruct where it improves clarity.
 - Do not expose JPA entities through controllers.
 
-Use `evolve-api-contract` for OpenAPI, generated backend boundaries, HTTP
-adapters, and API mappings. Use `implement-application-capability` for domain
-rules, use cases, commands, queries, ports, and application behavior.
+For functional backend requests, start with `implement-domain-capability`.
+After its scope plan is confirmed, use `evolve-api-contract` for OpenAPI,
+generated backend boundaries, HTTP adapters, and API mappings, and use
+`implement-application-capability` for domain rules, individual use cases,
+commands, queries, ports, and application behavior.
+
+Invoke a technical skill directly only when the task is explicitly confined to
+that technical responsibility and does not add product behavior.
 
 A skill may adapt a boundary it owns when adjacent semantics remain unchanged.
-If a change requires a new capability in another layer, activate that layer's
-skill after confirmation unless it was already approved by the functional
-coordinator.
+If a technical skill discovers a new capability in another layer, return to
+the functional coordinator for a scope decision unless that layer was already
+approved.
 
 ## Persistence
 
@@ -142,9 +181,17 @@ Recommended pattern:
 
 ## Security
 
-Family data access must always be scoped by `FamilyUser`.
+Always follow secure coding and data-protection practices. Do not expose
+sensitive data, trust unvalidated external input, log protected information,
+or introduce accidental cross-family queries.
 
-A user can access a family only if:
+Authentication, authorization, `FamilyUser` membership checks, roles, and
+permissions are functional behavior. Do not implement them merely because a
+resource belongs to a family. Include them only when explicitly requested or
+confirmed by the user.
+
+When family authorization is in the approved scope, a user can access a family
+only if:
 
 - The user is authenticated.
 - The user has an active relation with the family.

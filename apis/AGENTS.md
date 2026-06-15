@@ -243,14 +243,24 @@ The bundled output is generated under `apis/dist/` and should not be committed.
 
 ## Agent workflow
 
-Use the repository skill `evolve-api-contract` for API contract changes,
-generated backend or frontend boundaries, and API adapter adaptations.
+For new CRUD, endpoints backed by new behavior, or other functional API work,
+start with `implement-domain-capability`. It defines the functional scope and
+decides whether API, application, persistence, or frontend work is approved.
+
+Use `evolve-api-contract` directly only for an API-only change whose product
+semantics are already fixed, such as correcting documentation, validation, a
+parameter name, or a generated-boundary mapping.
 
 The API skill may adapt an HTTP or generated-code boundary when the application
 capability and semantics remain unchanged. It must not modify domain rules,
 application use cases, commands, queries, or ports. When those capabilities
-must change, activate `implement-application-capability` after obtaining
-confirmation, unless a confirmed functional plan already includes it.
+must change, return control to `implement-domain-capability` unless its
+confirmed plan already includes application work.
+
+Do not add error responses or security schemes merely because they are common
+or mentioned as general repository concerns. Authentication, authorization,
+roles, ownership, conflicts, and lifecycle errors must correspond to behavior
+included in the confirmed functional scope.
 
 For larger API changes, an additional robustness step is to ask for an independent API review pass. Codex can use a subagent for that only when the user explicitly asks for subagent-based or delegated review.
 

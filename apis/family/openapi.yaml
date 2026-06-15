@@ -1,7 +1,7 @@
 openapi: 3.1.0
 info:
   title: Family 360 - Family API
-  version: 0.1.0
+  version: 0.2.0
   description: >
     API for managing families and their direct relationships. 
   license:
@@ -70,6 +70,8 @@ paths:
                 $ref: '#/components/schemas/Family'
         '400':
           $ref: '#/components/responses/ProblemResponse'
+        '422':
+          $ref: '#/components/responses/ValidationProblem'
         default:
           $ref: '#/components/responses/ProblemResponse'
 
@@ -88,8 +90,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Family'
-        '400':
-          $ref: '#/components/responses/ProblemResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundProblem'
         default:
           $ref: '#/components/responses/ProblemResponse'
     patch:
@@ -110,8 +112,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Family'
-        '400':
-          $ref: '#/components/responses/ProblemResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundProblem'
+        '422':
+          $ref: '#/components/responses/ValidationProblem'
         default:
           $ref: '#/components/responses/ProblemResponse'
     delete:
@@ -122,8 +126,8 @@ paths:
       responses:
         '204':
           description: Family disabled
-        '400':
-          $ref: '#/components/responses/ProblemResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundProblem'
         default:
           $ref: '#/components/responses/ProblemResponse'
 
@@ -250,8 +254,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/FamilyMemberPage'
-        '400':
-          $ref: '#/components/responses/ProblemResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundProblem'
         default:
           $ref: '#/components/responses/ProblemResponse'
     post:
@@ -275,8 +279,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/FamilyMember'
-        '400':
-          $ref: '#/components/responses/ProblemResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundProblem'
+        '422':
+          $ref: '#/components/responses/ValidationProblem'
         default:
           $ref: '#/components/responses/ProblemResponse'
 
@@ -296,8 +302,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/FamilyMember'
-        '400':
-          $ref: '#/components/responses/ProblemResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundProblem'
         default:
           $ref: '#/components/responses/ProblemResponse'
     patch:
@@ -318,8 +324,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/FamilyMember'
-        '400':
-          $ref: '#/components/responses/ProblemResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundProblem'
+        '422':
+          $ref: '#/components/responses/ValidationProblem'
         default:
           $ref: '#/components/responses/ProblemResponse'
     delete:
@@ -330,8 +338,8 @@ paths:
       responses:
         '204':
           description: Family member disabled
-        '400':
-          $ref: '#/components/responses/ProblemResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundProblem'
         default:
           $ref: '#/components/responses/ProblemResponse'
 
@@ -733,6 +741,18 @@ components:
   responses:
     ProblemResponse:
       description: Error response
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/Problem'
+    NotFoundProblem:
+      description: The requested family resource was not found
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/Problem'
+    ValidationProblem:
+      description: The request violates input or domain validation rules
       content:
         application/problem+json:
           schema:

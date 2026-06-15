@@ -1,6 +1,6 @@
 ---
 name: evolve-api-contract
-description: Evolve an OpenAPI contract and its generated backend or frontend boundaries, including generated interfaces, models, clients, HTTP adapters, API mappers, validation, and compatibility analysis. Use for endpoints, parameters, payloads, responses, API errors, versioning, or generation changes. Do not implement new domain or application capabilities; detect that impact and request activation of the application skill.
+description: Evolve an already scoped OpenAPI contract and its generated boundaries, including interfaces, models, clients, HTTP adapters, mappings, validation, and compatibility analysis. Use directly for API-only changes with unchanged product semantics; for new CRUD, business behavior, or uncertain cross-layer impact, use implement-domain-capability first.
 ---
 
 # Evolve API Contract
@@ -18,6 +18,9 @@ layer ownership.
    frontend generation merely because a frontend path is planned.
 5. State whether the task includes backend generation, frontend generation, or
    both.
+6. Read the coordinator-approved scope ledger when one exists. Do not add
+   endpoints, errors, authorization responses, fields, or workflows that were
+   not requested or confirmed.
 
 ## Classify Compatibility
 
@@ -56,9 +59,9 @@ Do not modify domain rules, application use cases, application commands,
 queries, or ports. For an application capability change:
 
 1. Explain the required application change.
-2. Request confirmation to activate `$implement-application-capability`,
-   unless a coordinator-approved plan already includes it.
-3. Continue in the approved order after the application contract is ready.
+2. Return the impact to `$implement-domain-capability` for a scope decision,
+   unless the coordinator-approved plan already includes application work.
+3. Continue only within the approved scope.
 
 Do not invent alternative adapters to avoid an adjacent-layer change.
 
@@ -69,6 +72,9 @@ Do not invent alternative adapters to avoid an adjacent-layer change.
 3. Keep write schemas separate when their shape differs from resources.
 4. Model `PATCH` properties as optional.
 5. Document stable problem responses.
+   Only document authentication, authorization, conflict, lifecycle, or other
+   business errors when the corresponding behavior exists in the approved
+   scope.
 6. Avoid generator-specific `x-*` extensions without clear necessity.
 7. Run from `apis/`:
 
@@ -100,6 +106,12 @@ Never edit or commit generated build output such as
 
 Update handwritten API adapters, HTTP error mapping, and API mappers needed to
 connect generated types to existing application contracts.
+
+Place handwritten HTTP boundary code under
+`<domain>.infrastructure.adapter.in.http`. This includes generated-interface
+implementations, HTTP mappers, and HTTP exception handlers. Generated OpenAPI
+interfaces and models may remain in their configured versioned `api` package;
+do not place handwritten adapters beside them.
 
 Examples of allowed boundary adaptations:
 
