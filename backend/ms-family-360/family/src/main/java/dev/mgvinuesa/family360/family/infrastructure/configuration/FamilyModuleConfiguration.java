@@ -1,4 +1,4 @@
-package dev.mgvinuesa.family360.family.configuration;
+package dev.mgvinuesa.family360.family.infrastructure.configuration;
 
 import dev.mgvinuesa.family360.family.application.port.out.FamilyMemberRepository;
 import dev.mgvinuesa.family360.family.application.port.out.FamilyRepository;

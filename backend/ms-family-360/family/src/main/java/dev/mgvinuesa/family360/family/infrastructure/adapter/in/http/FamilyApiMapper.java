@@ -1,4 +1,4 @@
-package dev.mgvinuesa.family360.family.api;
+package dev.mgvinuesa.family360.family.infrastructure.adapter.in.http;
 
 import dev.mgvinuesa.family360.family.application.model.PageResult;
 import dev.mgvinuesa.family360.family.api.v1.model.Family;

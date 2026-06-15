@@ -39,14 +39,40 @@ backend/src/main/java/.../
 └── shared/
 ```
 
-Each functional area may contain:
+Each functional area should use:
 
 ```text
 application/
 domain/
 infrastructure/
-api/
+|-- adapter/
+|   |-- in/
+|   |   `-- http/
+|   `-- out/
+|       `-- <technology>/
+`-- configuration/
 ```
+
+Use `infrastructure.adapter.in.<technology>` for adapters that invoke
+application use cases and `infrastructure.adapter.out.<technology>` for
+adapters that implement application output ports.
+
+Examples:
+
+- `infrastructure.adapter.in.http` for controllers, generated-interface
+  implementations, HTTP mappers, and HTTP exception handlers.
+- `infrastructure.adapter.in.messaging` for message consumers.
+- `infrastructure.adapter.out.persistence` for persistent adapters, entity
+  mappings, and framework repositories.
+- `infrastructure.adapter.out.rest` for HTTP clients to external systems.
+- `infrastructure.configuration` for Spring composition and module wiring.
+
+Keep application contracts under `application.port.in` and
+`application.port.out`; ports are not adapters. Generated OpenAPI interfaces
+and models may remain in a versioned `api` package such as `api.v1`, but
+handwritten implementations of those interfaces belong under
+`infrastructure.adapter.in.http`. Do not use root-level `api`,
+`repository`, or `persistence` packages for handwritten adapters.
 
 Implement one explicit use-case class per business action. Use the
 `<Action><Concept>UseCase` naming convention unless the existing module has a

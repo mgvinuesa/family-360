@@ -107,6 +107,12 @@ Never edit or commit generated build output such as
 Update handwritten API adapters, HTTP error mapping, and API mappers needed to
 connect generated types to existing application contracts.
 
+Place handwritten HTTP boundary code under
+`<domain>.infrastructure.adapter.in.http`. This includes generated-interface
+implementations, HTTP mappers, and HTTP exception handlers. Generated OpenAPI
+interfaces and models may remain in their configured versioned `api` package;
+do not place handwritten adapters beside them.
+
 Examples of allowed boundary adaptations:
 
 - Map a corrected query-parameter name to the same query attribute.

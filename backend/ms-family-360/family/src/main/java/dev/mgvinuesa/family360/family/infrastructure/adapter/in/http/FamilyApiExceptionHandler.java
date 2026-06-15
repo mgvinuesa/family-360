@@ -1,4 +1,4 @@
-package dev.mgvinuesa.family360.family.api;
+package dev.mgvinuesa.family360.family.infrastructure.adapter.in.http;
 
 import dev.mgvinuesa.family360.family.api.v1.model.Problem;
 import dev.mgvinuesa.family360.family.application.exception.FamilyMemberNotFoundException;
@@ -12,7 +12,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-@RestControllerAdvice(basePackages = "dev.mgvinuesa.family360.family.api")
+@RestControllerAdvice(basePackages = "dev.mgvinuesa.family360.family.infrastructure.adapter.in.http")
 public class FamilyApiExceptionHandler {
 
     @ExceptionHandler({FamilyNotFoundException.class, FamilyMemberNotFoundException.class})

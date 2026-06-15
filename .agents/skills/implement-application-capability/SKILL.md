@@ -23,6 +23,10 @@ Own domain and application behavior and assess every adjacent boundary.
    those product capabilities.
 8. Inspect existing API adapters and persistence adapters to understand current
    contracts without assuming they must change.
+   Locate handwritten adapters under
+   `<domain>.infrastructure.adapter.in.<technology>` and
+   `<domain>.infrastructure.adapter.out.<technology>`. Keep input and output
+   port contracts under `application.port`; ports are not adapters.
 
 ## Analyze Adjacent-Layer Impact
 
@@ -73,6 +77,10 @@ Follow the backend architecture in `backend/AGENTS.md`:
 - Input ports for use-case invocation.
 - Output ports for capabilities required from external systems.
 - Domain/application exceptions mapped by boundary adapters.
+
+Compose use cases under `<domain>.infrastructure.configuration`. Do not place
+Spring configuration, HTTP adapters, or output adapter implementations in the
+domain or application packages.
 
 Keep generated API types and persistence entities outside domain and
 application contracts. Implement authorization or resource-scoping behavior

@@ -59,6 +59,12 @@ Classify each layer as:
 - **Unaffected:** no change is needed.
 - **Deferred:** impact exists but the user has excluded it from this task.
 
+When identifying adapter impact, use the repository convention:
+`<domain>.infrastructure.adapter.in.<technology>` for input adapters,
+`<domain>.infrastructure.adapter.out.<technology>` for output adapters, and
+`<domain>.infrastructure.configuration` for module composition. Do not confuse
+application ports with their adapter implementations.
+
 Explain the classification and ask for confirmation before expanding beyond
 the user's stated scope. Do not ask again for layers already approved in the
 confirmed plan.

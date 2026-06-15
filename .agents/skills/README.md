@@ -37,6 +37,12 @@ adapters, and API mappings. It may adapt a boundary when application semantics
 remain unchanged, but it must return to the functional coordinator when it
 discovers a new application capability.
 
+Handwritten adapters follow the backend package convention:
+`<domain>.infrastructure.adapter.in.<technology>` and
+`<domain>.infrastructure.adapter.out.<technology>`. Spring composition belongs
+under `<domain>.infrastructure.configuration`; application ports remain under
+`application.port`.
+
 ### `implement-application-capability`
 
 Own domain rules, one class per business use case, commands, queries, ports, and
