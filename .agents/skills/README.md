@@ -52,7 +52,7 @@ persistence impact without changing those layers implicitly.
 
 ## Planned Skills
 
-A persistence skill will later own Flyway, JPA, Spring Data, persistent
+A persistence skill will later own Atlas migrations, JPA, Spring Data, persistent
 adapters, transactions, and database-focused verification. Until it is
 defined, existing skills must report required persistence work as deferred or
 blocked and must not create substitute production adapters.

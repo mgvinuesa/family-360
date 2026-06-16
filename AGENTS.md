@@ -28,6 +28,8 @@ The application should be built in a contract-first way, keeping backend, APIs, 
 │   └── domains/
 ├── backend/
 │   └── AGENTS.md
+├── database/
+│   └── AGENTS.md
 ├── apis/
 │   └── AGENTS.md
 ├── frontend/
@@ -95,7 +97,7 @@ The currently available technical skills are:
 - `implement-application-capability`
 
 Persistence work will receive a dedicated skill later. Until then, do not use
-the existing skills to modify Flyway migrations, JPA entities, Spring Data
+the existing skills to modify Atlas migrations, JPA entities, Spring Data
 repositories, or persistent output adapters as an implicit part of API or
 application work.
 
@@ -253,6 +255,7 @@ Examples:
 
 - API task: stage only `apis/` and directly related root docs.
 - Backend task: stage only `backend/` and directly related root docs.
+- Database task: stage only `database/` and directly related root docs.
 - Frontend task: stage only `frontend/` and directly related root docs.
 - Integration task: may stage multiple areas, but the task must say so explicitly.
 

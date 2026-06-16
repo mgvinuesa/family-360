@@ -51,7 +51,7 @@ concrete persistence adapters directly. For API impact:
    unless the coordinator-approved plan already includes API work.
 
 Persistence is not yet supported by a dedicated repository skill. Do not
-modify Flyway, JPA entities, Spring Data repositories, or concrete persistent
+modify Atlas migrations, JPA entities, Spring Data repositories, or concrete persistent
 adapters. When required:
 
 1. Define the application port contract if that is part of the approved

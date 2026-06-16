@@ -17,7 +17,8 @@ Current `ms-family-360` modules:
 - `family-360-application`: deployable Spring Boot application. It depends on
   the functional modules that are exposed by the backend.
 - `family-360-persistence`: shared persistence module for JPA entities,
-  repositories, Flyway migrations, and database-specific configuration.
+  repositories, and database-specific configuration. Database migrations are
+  owned independently under `database/`.
 - `family`: functional module for the family bounded area.
 
 The intended direction is to keep each functional area in its own Maven module

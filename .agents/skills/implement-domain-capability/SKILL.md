@@ -94,7 +94,7 @@ Use the smallest set of available technical skills:
 - Use `$implement-application-capability` for domain rules, application use
   cases, commands, queries, and application ports.
 - Persistence requires a dedicated persistence skill. Until that skill exists,
-  do not modify Flyway, JPA entities, Spring Data repositories, or persistent
+  do not modify Atlas migrations, JPA entities, Spring Data repositories, or persistent
   output adapters. Report this layer as deferred or blocked.
 
 Invoke technical skills in dependency order, but re-evaluate impact after each

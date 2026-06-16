@@ -14,7 +14,6 @@ If a backend change requires a public API change, update `apis/` first or clearl
 - Spring Boot 4.x
 - Maven
 - PostgreSQL
-- Flyway
 - JPA / Hibernate
 - MapStruct
 - OpenAPI Generator
@@ -120,12 +119,16 @@ approved.
 
 Persistence changes are intentionally excluded from the current API and
 application skills. Until a dedicated persistence skill is defined, do not
-modify Flyway migrations, JPA entities, Spring Data repositories, or concrete
+modify Atlas migrations, JPA entities, Spring Data repositories, or concrete
 persistent adapters as an implicit consequence of API or application work.
 Define required application ports when appropriate, then report concrete
 persistence implementation as deferred or blocked.
 
-- Use Flyway migrations.
+- Database schema evolution is owned by the independent Atlas project under
+  `database/`.
+- Do not place migration scripts in backend modules.
+- Do not make backend application startup responsible for production schema
+  migration.
 - Do not rely on Hibernate DDL auto-generation for real schema evolution.
 - Prefer explicit table and column names.
 - Use UUID primary keys.
@@ -237,7 +240,7 @@ mvn -Dtest=ClassNameTest test
 Before finishing a backend task, check:
 
 - Are API contracts aligned?
-- Is a Flyway migration required?
+- Is an Atlas migration in `database/` required and explicitly in scope?
 - Are generated DTOs/interfaces untouched?
 - Are entities not exposed directly through controllers?
 - Are validations covered?
