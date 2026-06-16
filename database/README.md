@@ -39,13 +39,20 @@ runtime integration is intentionally deferred to a separate backend change.
 ## Prerequisites
 
 - Atlas CLI 1.2 or newer, available on `PATH`
-- Docker-compatible container runtime available through the `docker` CLI
 - PostgreSQL 17 compatibility
+- Docker-compatible container runtime available through the `docker` CLI when
+  running Atlas commands that need disposable dev databases or full
+  migration-apply validation
 
 Verify the local tools:
 
 ```bash
 atlas version
+```
+
+When Docker-backed validation is in scope, also verify:
+
+```bash
 docker version
 ```
 
@@ -100,8 +107,8 @@ atlas migrate apply --env family --dry-run \
 Remove `--dry-run` only after reviewing the migration plan and when applying
 changes is intentional.
 
-Atlas migration linting and Atlas Cloud are not required by this initial
-setup.
+Atlas migration linting, Atlas Cloud, and a finalized local multi-environment
+workflow are not required by this initial setup.
 
 Agent-specific Atlas guidance:
 
