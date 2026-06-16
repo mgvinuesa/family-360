@@ -50,12 +50,15 @@ application behavior already included in the confirmed scope. Authorization is
 implemented only when explicitly approved. The skill assesses API and
 persistence impact without changing those layers implicitly.
 
-## Planned Skills
+### `implement-persistence-capability`
 
-A persistence skill will later own Atlas migrations, JPA, Spring Data, persistent
-adapters, transactions, and database-focused verification. Until it is
-defined, existing skills must report required persistence work as deferred or
-blocked and must not create substitute production adapters.
+Own already approved persistence work across Atlas desired schema, versioned
+migrations, JPA entities, Spring Data repositories, persistent output adapters,
+transactions, mappings, and database-focused verification. It may implement an
+existing application output port or adapt a persistence boundary when
+application semantics remain unchanged, but it must return to the functional
+coordinator when it discovers a new application, API, frontend, or database
+artifact capability.
 
 ## Invocation
 

@@ -117,12 +117,11 @@ approved.
 
 ## Persistence
 
-Persistence changes are intentionally excluded from the current API and
-application skills. Until a dedicated persistence skill is defined, do not
-modify Atlas migrations, JPA entities, Spring Data repositories, or concrete
-persistent adapters as an implicit consequence of API or application work.
-Define required application ports when appropriate, then report concrete
-persistence implementation as deferred or blocked.
+Persistence changes are owned by `implement-persistence-capability` after
+`implement-domain-capability` has approved the persistence scope, or when the
+task is explicitly persistence-only. API and application skills must not modify
+Atlas migrations, JPA entities, Spring Data repositories, or concrete
+persistent adapters directly.
 
 - Database schema evolution is owned by the independent Atlas project under
   `database/`.
@@ -240,7 +239,8 @@ mvn -Dtest=ClassNameTest test
 Before finishing a backend task, check:
 
 - Are API contracts aligned?
-- Is an Atlas migration in `database/` required and explicitly in scope?
+- Is an Atlas migration in `database/` required and explicitly in scope through
+  `implement-persistence-capability`?
 - Are generated DTOs/interfaces untouched?
 - Are entities not exposed directly through controllers?
 - Are validations covered?

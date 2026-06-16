@@ -1,0 +1,4 @@
+interface:
+  display_name: "Implement Persistence Capability"
+  short_description: "Implement approved Atlas and backend persistence changes"
+  default_prompt: "Use $implement-persistence-capability to implement an already approved persistence change across Atlas migrations, JPA entities, Spring Data repositories, persistent adapters, and database-focused tests."

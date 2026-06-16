@@ -50,14 +50,15 @@ concrete persistence adapters directly. For API impact:
 2. Return the impact to `$implement-domain-capability` for a scope decision,
    unless the coordinator-approved plan already includes API work.
 
-Persistence is not yet supported by a dedicated repository skill. Do not
-modify Atlas migrations, JPA entities, Spring Data repositories, or concrete persistent
-adapters. When required:
+Do not modify Atlas migrations, JPA entities, Spring Data repositories, or
+concrete persistent adapters directly. When persistence is required:
 
 1. Define the application port contract if that is part of the approved
    application capability.
 2. Explain the persistence behavior needed to implement it.
-3. Mark concrete persistence work as deferred or blocked.
+3. Return the impact to `$implement-domain-capability` unless the
+   coordinator-approved plan already includes persistence work through
+   `$implement-persistence-capability`.
 4. Do not create an in-memory or alternate adapter merely to make the feature
    appear complete.
 

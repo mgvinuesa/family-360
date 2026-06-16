@@ -95,16 +95,17 @@ The currently available technical skills are:
 
 - `evolve-api-contract`
 - `implement-application-capability`
+- `implement-persistence-capability`
 
-Persistence work will receive a dedicated skill later. Until then, do not use
-the existing skills to modify Atlas migrations, JPA entities, Spring Data
-repositories, or persistent output adapters as an implicit part of API or
-application work.
+Persistence work is owned by `implement-persistence-capability`. Use it for
+approved changes to Atlas desired schema, versioned migrations, JPA entities,
+Spring Data repositories, persistent output adapters, mappings, transactions,
+and database-focused verification.
 
-When persistence or another unsupported layer is required for the requested
-functional outcome, the coordinator must state that the capability cannot be
-completed and ask whether a partial implementation is wanted. Do not proceed
-with a contract-only or application-only skeleton by assumption.
+When another unsupported layer is required for the requested functional
+outcome, the coordinator must state that the capability cannot be completed
+and ask whether a partial implementation is wanted. Do not proceed with a
+contract-only or application-only skeleton by assumption.
 
 ## Domain-oriented repository navigation
 
