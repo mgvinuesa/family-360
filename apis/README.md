@@ -19,12 +19,17 @@ Official references:
 
 ## Requirements
 
-Install Node.js with npm.
+Install Node.js with npm. The API workspace uses npm only to install and run
+local tooling such as Redocly CLI.
 
-Redocly CLI v2 requires one of these Node.js versions:
+The project supports Node.js versions accepted by Redocly CLI v2:
 
 - Node.js 22.12.0 or newer
 - Node.js 20.19.0 or newer
+
+Use the Node.js version already available in the local environment when
+`npm install` and `npm run api:check` pass. If a local version causes tooling
+or package-engine errors, prefer the active Node.js LTS line.
 
 Recommended installation:
 
