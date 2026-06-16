@@ -93,9 +93,9 @@ Use the smallest set of available technical skills:
   boundaries.
 - Use `$implement-application-capability` for domain rules, application use
   cases, commands, queries, and application ports.
-- Persistence requires a dedicated persistence skill. Until that skill exists,
-  do not modify Atlas migrations, JPA entities, Spring Data repositories, or persistent
-  output adapters. Report this layer as deferred or blocked.
+- Use `$implement-persistence-capability` for Atlas desired schema, versioned
+  migrations, JPA entities, Spring Data repositories, persistent output
+  adapters, mappings, transactions, and database-focused verification.
 
 Invoke technical skills in dependency order, but re-evaluate impact after each
 one. A later need may only become visible after an earlier contract is
@@ -133,8 +133,7 @@ is:
 2. Implement required application behavior and contracts.
 3. Regenerate and complete input-boundary adaptation against the application
    contract.
-4. Implement persistence schema and output adapters when approved and
-   supported.
+4. Implement persistence schema and output adapters when approved.
 5. Regenerate the frontend client and integrate UI behavior when requested.
 
 Change the order when dependencies make another sequence safer. Temporary

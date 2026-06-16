@@ -14,6 +14,12 @@ unless the task explicitly includes those areas. When a database change
 reveals a required application or contract change, report that impact and
 return scope control to `implement-domain-capability`.
 
+When a scoped task includes both database schema evolution and backend
+persistence code, use `implement-persistence-capability`. That skill owns the
+coordinated Atlas artifact changes, JPA entities, Spring Data repositories,
+persistent output adapters, mappings, and database-focused verification inside
+the approved scope.
+
 ## Preferred stack
 
 - PostgreSQL
